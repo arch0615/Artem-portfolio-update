@@ -11,7 +11,8 @@ import { ButtonLink } from '@/components/ui/Button'
 import { Container } from './Container'
 import { Logo } from './Logo'
 
-const sectionIds = navigation.map((item) => item.id)
+// Contact is tracked too (though not in the menu), so no menu item stays highlighted there.
+const sectionIds = [...navigation.map((item) => item.id), navCta.id]
 const noSections: string[] = []
 
 export function Navbar() {

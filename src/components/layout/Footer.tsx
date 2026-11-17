@@ -1,14 +1,11 @@
 import { Link } from 'react-router'
 import { ArrowUp } from 'lucide-react'
-import { navigation } from '@/data/navigation'
+import { footerNavigation } from '@/data/navigation'
 import { contactConfig, getContactMethods } from '@/data/contact'
 import { footerContent } from '@/data/content'
 import { ContactMethodIcon } from '@/components/ui/ContactMethodIcon'
 import { Container } from './Container'
 import { Monogram } from './Logo'
-
-/** Footer navigation: every section except "Home" (the logo already links there). */
-const footerLinks = navigation.filter((item) => item.id !== 'home')
 
 export function Footer() {
   // Only methods that are configured AND permitted by platformCompliance.
@@ -38,7 +35,7 @@ export function Footer() {
           <nav aria-label="Footer">
             <h2 className="font-mono text-[0.7rem] tracking-[0.2em] text-fg-subtle uppercase">Navigate</h2>
             <ul className="mt-4 grid grid-cols-2 gap-x-6 gap-y-2.5 text-sm">
-              {footerLinks.map((item) => (
+              {footerNavigation.map((item) => (
                 <li key={item.id}>
                   <Link to={`/#${item.id}`} className="text-fg-muted transition-colors hover:text-fg">
                     {item.label}

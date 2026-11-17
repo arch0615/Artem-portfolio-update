@@ -1,0 +1,377 @@
+/*
+ * Intro overlay effects that are simpler as CSS keyframes than as Framer Motion values.
+ * Only transform, opacity, stroke-dashoffset and background-position are animated.
+ * Delays and durations are set inline from `timeline.ts` / `geometry.ts`.
+ * (The global reduced-motion rule never sees these: the reduced intro doesn't render them.)
+ */
+
+/*
+ * Glows. Each falloff is eased over several stops: a straight linear ramp to transparent leaves
+ * a visible "edge" (Mach band) on such a dark background.
+ */
+
+.intro-ambient {
+  background: radial-gradient(
+    60% 46% at 50% 50%,
+    rgb(79 70 229 / 0.22) 0%,
+    rgb(79 70 229 / 0.15) 22%,
+    rgb(79 70 229 / 0.08) 42%,
+    rgb(79 70 229 / 0.03) 64%,
+    rgb(79 70 229 / 0.008) 82%,
+    transparent 100%
+  );
+}
+
+/* Portrait phones: keep the glow a wide band around the name instead of a tall oval. */
+@media (max-aspect-ratio: 3 / 4) {
+  .intro-ambient {
+    background-size: 160% 70%;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+}
+
+.intro-ambient-accents {
+  background:
+    radial-gradient(
+      40% 32% at 62% 56%,
+      rgb(139 92 246 / 0.15) 0%,
+      rgb(139 92 246 / 0.07) 40%,
+      rgb(139 92 246 / 0.02) 72%,
+      transparent 100%
+    ),
+    radial-gradient(
+      36% 30% at 36% 44%,
+      rgb(59 130 246 / 0.12) 0%,
+      rgb(59 130 246 / 0.055) 40%,
+      rgb(59 130 246 / 0.015) 72%,
+      transparent 100%
+    );
+}
+
+/* Darkens what passes behind the letters so ribbons and glow never compete with them. */
+.intro-backplate {
+  background: radial-gradient(
+    closest-side,
+    rgb(9 9 11 / 0.82) 0%,
+    rgb(9 9 11 / 0.6) 40%,
+    rgb(9 9 11 / 0.22) 74%,
+    transparent 100%
+  );
+}
+
+.intro-bloom {
+  background: radial-gradient(
+    closest-side,
+    rgb(224 231 255 / 0.42) 0%,
+    rgb(129 140 248 / 0.2) 32%,
+    rgb(99 102 241 / 0.07) 62%,
+    rgb(99 102 241 / 0.015) 84%,
+    transparent 100%
+  );
+}
+
+.intro-ground {
+  background: radial-gradient(
+    closest-side,
+    rgb(99 102 241 / 0.2) 0%,
+    rgb(99 102 241 / 0.09) 45%,
+    rgb(99 102 241 / 0.025) 75%,
+    transparent 100%
+  );
+}
+
+/* Particle haze ---------------------------------------------------------- */
+
+.intro-particle {
+  position: absolute;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgb(238 242 255) 0%, rgb(165 180 252 / 0.55) 40%, transparent 70%);
+  opacity: 0;
+  animation-name: intro-particle;
+  animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+  animation-fill-mode: both;
+  will-change: transform, opacity;
+}
+
+@keyframes intro-particle {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale(0.5);
+  }
+  35% {
+    opacity: var(--intro-o, 0.6);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--intro-dx, 0), var(--intro-dy, -24px), 0) scale(1);
+  }
+}
+
+/* Background drift: one barely perceptible pass, longer than the intro ----- */
+
+.intro-drift {
+  will-change: transform;
+  animation: intro-drift 9s cubic-bezier(0.37, 0, 0.63, 1) both;
+}
+
+@keyframes intro-drift {
+  from {
+    transform: translate3d(calc(var(--intro-drift-x, 1.2%) * -1), calc(var(--intro-drift-y, 0.6%) * -1), 0);
+  }
+  to {
+    transform: translate3d(var(--intro-drift-x, 1.2%), var(--intro-drift-y, 0.6%), 0);
+  }
+}
+
+/* Energy smoke: soft wisps flowing left to right, gently swelling as they go */
+
+.intro-smoke {
+  position: absolute;
+  border-radius: 9999px;
+  will-change: transform;
+  animation-name: intro-smoke;
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+}
+
+.intro-smoke-blue {
+  background: radial-gradient(
+    closest-side,
+    rgb(59 130 246 / 0.2) 0%,
+    rgb(59 130 246 / 0.11) 35%,
+    rgb(59 130 246 / 0.04) 66%,
+    rgb(59 130 246 / 0.01) 86%,
+    transparent 100%
+  );
+}
+
+.intro-smoke-indigo {
+  background: radial-gradient(
+    closest-side,
+    rgb(99 102 241 / 0.18) 0%,
+    rgb(99 102 241 / 0.1) 35%,
+    rgb(99 102 241 / 0.035) 66%,
+    rgb(99 102 241 / 0.01) 86%,
+    transparent 100%
+  );
+}
+
+.intro-smoke-violet {
+  background: radial-gradient(
+    closest-side,
+    rgb(139 92 246 / 0.2) 0%,
+    rgb(139 92 246 / 0.11) 35%,
+    rgb(139 92 246 / 0.04) 66%,
+    rgb(139 92 246 / 0.01) 86%,
+    transparent 100%
+  );
+}
+
+@keyframes intro-smoke {
+  0% {
+    transform: translate3d(-16%, 0, 0) rotate(var(--intro-r, 0deg)) scale(1, 1);
+  }
+  50% {
+    transform: translate3d(0, -5%, 0) rotate(var(--intro-r, 0deg)) scale(1.06, 0.94);
+  }
+  100% {
+    transform: translate3d(16%, 0, 0) rotate(var(--intro-r, 0deg)) scale(1, 1);
+  }
+}
+
+/* Light pulses behind the name: blue on the left, violet on the right, half a beat apart */
+
+.intro-pulse {
+  position: absolute;
+  top: 50%;
+  width: 75%;
+  height: 340%;
+  border-radius: 9999px;
+  opacity: 0.45;
+  will-change: transform, opacity;
+  animation: intro-pulse 3.2s cubic-bezier(0.37, 0, 0.63, 1) infinite both;
+}
+
+.intro-pulse-blue {
+  left: 0;
+  background: radial-gradient(
+    closest-side,
+    rgb(59 130 246 / 0.3) 0%,
+    rgb(59 130 246 / 0.16) 35%,
+    rgb(59 130 246 / 0.05) 68%,
+    rgb(59 130 246 / 0.012) 88%,
+    transparent 100%
+  );
+}
+
+.intro-pulse-violet {
+  right: 0;
+  background: radial-gradient(
+    closest-side,
+    rgb(139 92 246 / 0.3) 0%,
+    rgb(139 92 246 / 0.16) 35%,
+    rgb(139 92 246 / 0.05) 68%,
+    rgb(139 92 246 / 0.012) 88%,
+    transparent 100%
+  );
+}
+
+@keyframes intro-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: translate3d(0, -50%, 0) scale(0.94);
+  }
+  50% {
+    opacity: 1;
+    transform: translate3d(0, -50%, 0) scale(1.05);
+  }
+}
+
+/* Glowing motes floating around the name (endless, each on its own cycle) */
+
+.intro-mote {
+  position: absolute;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgb(238 242 255) 0%, rgb(165 180 252 / 0.6) 45%, transparent 72%);
+  box-shadow: 0 0 6px 1px rgb(129 140 248 / 0.35);
+  will-change: transform, opacity;
+  animation-name: intro-mote;
+  animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  animation-fill-mode: both;
+}
+
+@keyframes intro-mote {
+  from {
+    opacity: calc(var(--intro-o, 0.7) * 0.35);
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    opacity: var(--intro-o, 0.7);
+    transform: translate3d(var(--intro-dx, 0), var(--intro-dy, -10px), 0);
+  }
+}
+
+/* Light glints travelling along the ribbons (paths use pathLength="1") ----- */
+
+.intro-spark {
+  fill: none;
+  stroke-linecap: round;
+  stroke-dasharray: 0.1 1.3;
+  stroke-dashoffset: 0.1;
+  animation: intro-spark 3.75s cubic-bezier(0.45, 0, 0.25, 1) both;
+}
+
+@keyframes intro-spark {
+  to {
+    stroke-dashoffset: -1.1;
+  }
+}
+
+/* Gloss sweep across the name --------------------------------------------- */
+
+.intro-sheen {
+  background-image: linear-gradient(
+    100deg,
+    transparent 40%,
+    rgb(255 255 255 / 0.95) 50%,
+    rgb(199 210 254 / 0.6) 54%,
+    transparent 62%
+  );
+  background-size: 300% 100%;
+  background-repeat: no-repeat;
+  background-position: 100% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: intro-sheen 2.1s cubic-bezier(0.45, 0, 0.25, 1) both;
+}
+
+@keyframes intro-sheen {
+  to {
+    background-position: 0% 0;
+  }
+}
+
+/* Name fill: cool white with a soft glossy falloff, plus a restrained bloom */
+
+.intro-name-fill {
+  background-image: linear-gradient(180deg, #ffffff 0%, #f5f7ff 46%, #c7d0ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.intro-name-glow {
+  filter: drop-shadow(0 0 1px rgb(255 255 255 / 0.35)) drop-shadow(0 0 22px rgb(129 140 248 / 0.45));
+}
+
+/* Mirrored copy under the name; strongest next to the baseline, then fades out. */
+.intro-reflection {
+  transform: scaleY(-1);
+  opacity: 0.2;
+  -webkit-mask-image: linear-gradient(to top, #000 0%, transparent 55%);
+  mask-image: linear-gradient(to top, #000 0%, transparent 55%);
+}
+
+/* Once revealed, the reflection breathes very slightly, like light on a glossy floor. */
+.intro-reflection-live {
+  animation: intro-reflection 1.8s cubic-bezier(0.37, 0, 0.63, 1) infinite alternate both;
+}
+
+@keyframes intro-reflection {
+  from {
+    opacity: 0.2;
+  }
+  to {
+    opacity: 0.28;
+  }
+}
+
+/*
+ * Floor shimmer: a soft band of light glides left to right across the reflection, then rests.
+ * Two nested masks (sides, then depth) instead of mask-composite, for wider browser support.
+ */
+.intro-floor {
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 20%, #000 80%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, #000 20%, #000 80%, transparent 100%);
+}
+
+.intro-floor-depth {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, rgb(0 0 0 / 0.45) 45%, transparent 92%);
+  mask-image: linear-gradient(to bottom, #000 0%, rgb(0 0 0 / 0.45) 45%, transparent 92%);
+}
+
+.intro-floor-band {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 26%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgb(199 210 254 / 0.08) 28%,
+    rgb(224 231 255 / 0.2) 50%,
+    rgb(199 210 254 / 0.08) 72%,
+    transparent 100%
+  );
+  will-change: transform;
+  animation: intro-floor-band 3s cubic-bezier(0.45, 0, 0.55, 1) infinite both;
+}
+
+@keyframes intro-floor-band {
+  0% {
+    transform: translate3d(-100%, 0, 0);
+  }
+  70%,
+  100% {
+    transform: translate3d(390%, 0, 0);
+  }
+}

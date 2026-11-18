@@ -107,13 +107,15 @@ const edges: { id: string; from: NodeId; to: NodeId; d: string }[] = [
 
 const pct = (value: number, total: number) => `${(value / total) * 100}%`
 
-export function HeroVisual() {
+/** Interactive map of how a complete product fits together (shown in the Expertise section). */
+export function ProductArchitecture() {
   const [active, setActive] = useState<NodeId | null>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const inView = useInView(containerRef, { margin: '0px 0px -10% 0px' })
+  const entered = useInView(containerRef, { once: true, margin: '0px 0px -15% 0px' })
   const reducedMotion = usePrefersReducedMotion()
-  // Entrance animations (and the looping data packets) wait for the intro overlay to dissolve.
-  const revealed = useIntroRevealed()
+  // Entrance animations play once scrolled into view, and never unseen under the intro overlay.
+  const revealed = useIntroRevealed() && entered
   const activeNode = nodes.find((n) => n.id === active)
   const showPackets = inView && !reducedMotion && revealed
 
@@ -220,7 +222,7 @@ export function HeroVisual() {
                 key={node.id}
                 type="button"
                 aria-pressed={isActive}
-                aria-describedby="hero-node-info"
+                aria-describedby="architecture-node-info"
                 onMouseEnter={() => setActive(node.id)}
                 onFocus={() => setActive(node.id)}
                 onClick={() => setActive(node.id)}
@@ -262,7 +264,7 @@ export function HeroVisual() {
         </div>
 
         {/* Details for the hovered / focused layer */}
-        <div className="relative border-t border-line bg-canvas/40 px-4 py-3.5" aria-live="polite" id="hero-node-info">
+        <div className="relative border-t border-line bg-canvas/40 px-4 py-3.5" aria-live="polite" id="architecture-node-info">
           {activeNode ? (
             <div className="flex flex-col gap-2 @md:flex-row @md:items-center @md:justify-between @md:gap-4">
               <div className="min-w-0">

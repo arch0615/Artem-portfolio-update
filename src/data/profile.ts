@@ -1,4 +1,4 @@
-import type { Highlight } from '../types'
+import type { Highlight, PortraitMedia } from '../types'
 
 /**
  * Identity and site-wide SEO configuration. The site intentionally publishes no contact details.
@@ -18,6 +18,23 @@ export const profile = {
   positioning:
     'I build intelligent digital products, scalable web applications, mobile experiences, and AI-powered automation systems.',
 } as const
+
+/**
+ * Hero portrait (right side of the hero). The still image always shows first. To animate it, put the
+ * looping clip in `public/videos/` and list it in `videos`, e.g.
+ * `{ src: '/videos/portrait.mp4', type: 'video/mp4' }` (see README, "Hero portrait").
+ */
+export const portrait: PortraitMedia = {
+  alt: 'Full-length portrait of Artem Bohomolov',
+  width: 1024,
+  height: 1536,
+  images: [
+    { src: '/images/portrait-480.webp', width: 480 },
+    { src: '/images/portrait-768.webp', width: 768 },
+    { src: '/images/portrait-1024.webp', width: 1024 },
+  ],
+  videos: [],
+}
 
 export const site = {
   url: 'https://artem-bohomolov-portfolio.vercel.app',

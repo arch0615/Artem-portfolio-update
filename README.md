@@ -40,7 +40,7 @@ All copy and project data live in typed files under `src/data/` — components c
 
 | File | Contents |
 | --- | --- |
-| `profile.ts` | Name, titles, site URL and SEO defaults |
+| `profile.ts` | Name, titles, hero portrait, site URL and SEO defaults |
 | `content.ts` | Section copy: hero, about, experience, process, footer, intro |
 | `projects.ts` | Project cards (featured projects get a case study) and the `showProjectLinks` switch |
 | `case-studies.ts` | Case-study narrative, architecture layers, decisions, results |
@@ -100,6 +100,28 @@ The subtitle and Skip label are in `introContent` (`src/data/content.ts`); the n
 - **Turning it off:** remove `<IntroProvider>` from `src/App.tsx`. Components that call
   `useIntroRevealed()` then animate immediately (the context defaults to "revealed").
 
+### Hero portrait
+
+The right side of the hero shows a full-length portrait (`HeroPortrait.tsx`, configured by
+`portrait` in `src/data/profile.ts`). The photo is served from `public/images/` as WebP in three
+widths (480, 768 and 1024 px, 17–63 KB), and the browser picks the right one for the screen.
+
+**Adding the animated version.** The site doesn't generate video: create the clip from the original
+photo with an image-to-video tool (e.g. Kling, Runway, Google Veo or Luma), then:
+
+1. Export a seamless 5–7 s loop without audio, ideally in the photo's 2:3 aspect (9:16 also works),
+   about 720 px wide, as MP4 (H.264), ideally under 3 MB.
+2. Save it as `public/videos/portrait.mp4`.
+3. In `profile.ts`, set `videos: [{ src: '/videos/portrait.mp4', type: 'video/mp4' }]`.
+
+The photo shows first. The clip fades in over it once the intro has dissolved, loops silently,
+pauses while scrolled off screen and is never loaded for visitors who prefer reduced motion (they
+keep the photo). The clip is never cropped, so head to feet always stay visible; if its aspect
+differs from the photo's, the photo fills the uncovered edges.
+
+To replace the photo, export new `portrait-480/768/1024.webp` files under the same names and update
+`width`/`height` if the aspect ratio changes.
+
 ### Project visuals
 
 Each project uses an original, resolution-independent CSS mockup (`src/components/visuals/`),
@@ -125,7 +147,8 @@ image in `public/images/projects/` and render it in `ProjectCard` in place of `P
 - Case-study pages and brand-icon data load lazily.
 - The Latin Geist font file is preloaded; other subsets load only when needed.
 - Animations are transform/opacity only, play once on reveal, and are disabled for users who prefer
-  reduced motion. The hero's data "packets" only run while the hero is on screen.
+  reduced motion. The architecture graph's data "packets" and the portrait clip only run while on
+  screen.
 
 ## Deployment (Vercel)
 
@@ -140,13 +163,14 @@ assets and baseline security headers.
 
 ```
 config/                   Build plugins: SEO/sitemap/robots, font preload
-public/                   favicon.ico/.svg, touch & PWA icons, og-image.png, site.webmanifest
+public/                   favicon.ico/.svg, touch & PWA icons, og-image.png, site.webmanifest,
+                          images/portrait-*.webp (hero portrait)
 src/
   components/
     intro/                Full-screen intro (provider, overlay, timeline, ribbon geometry, styles)
     layout/               Navbar, Footer, Container, Logo, ScrollManager
-    sections/             Hero (+ interactive HeroVisual), TechHighlights, About, Expertise,
-                          Projects, Services, Experience, Process
+    sections/             Hero (+ HeroPortrait), TechHighlights, About, Expertise (+ interactive
+                          ProductArchitecture graph), Projects, Services, Experience, Process
     ui/                   Button, SectionHeading, AnimatedSection, ProjectCard, SkillCard,
                           ServiceCard, SpotlightCard, TechChip, IconBadge, BrandIcon
     visuals/              Original CSS product mockups for each project

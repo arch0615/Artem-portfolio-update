@@ -8,7 +8,7 @@ import { easeOutExpo } from '@/lib/motion'
 import { useIntroRevealed } from '@/components/intro/intro-context'
 import { Container } from '@/components/layout/Container'
 import { ButtonLink } from '@/components/ui/Button'
-import { HeroVisual } from './HeroVisual'
+import { HeroPortrait } from './HeroPortrait'
 
 const hidden = { opacity: 0, y: 18, filter: 'blur(6px)' }
 const shown = { opacity: 1, y: 0, filter: 'blur(0px)' }
@@ -52,7 +52,7 @@ export function Hero() {
           ))}
         </h1>
 
-        <div className="mt-12 grid grid-cols-1 items-center gap-16 lg:mt-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.08fr)] lg:gap-14 xl:gap-20">
+        <div className="mt-12 grid grid-cols-1 items-start gap-16 lg:mt-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.08fr)] lg:gap-14 xl:gap-20">
           <div>
             <m.div {...enter(0.4)} className="max-w-xl space-y-4 text-base leading-relaxed text-fg-muted sm:text-lg">
               {heroContent.intro.map((paragraph) => (
@@ -96,9 +96,8 @@ export function Hero() {
             </m.div>
           </div>
 
-          <HeroVisual />
+          <HeroPortrait />
         </div>
-
       </Container>
     </section>
   )

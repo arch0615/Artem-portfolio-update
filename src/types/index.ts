@@ -50,6 +50,17 @@ export interface NavItem {
   label: string
 }
 
+export interface PortraitMedia {
+  alt: string
+  /** Intrinsic size of the still image; sets the frame's aspect ratio. */
+  width: number
+  height: number
+  /** The still image in several widths, smallest first. Shown first, and alone with reduced motion. */
+  images: { src: string; width: number }[]
+  /** Optional muted looping clip, in order of preference. Empty means the still image only. */
+  videos: { src: string; type: string }[]
+}
+
 export interface Highlight {
   label: string
   icon: IconName

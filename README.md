@@ -13,10 +13,8 @@ A single-page site with dedicated case-study pages, built as a fast, accessible,
 | Styling | Tailwind CSS 4 (CSS-first tokens in `src/styles/index.css`) |
 | Animation | Framer Motion (`LazyMotion` + `m`, respects *reduce motion*) |
 | Routing | React Router 8 (case studies are lazy-loaded routes) |
-| Forms | React Hook Form + Zod |
 | Icons | Lucide React; brand glyphs from Simple Icons (CC0), lazy-loaded |
 | Fonts | Geist / Geist Mono, self-hosted via Fontsource |
-| Contact backend | Vercel serverless function → Resend REST API |
 
 ## Getting started
 
@@ -29,7 +27,7 @@ npm run dev        # http://localhost:5173
 
 | Script | What it does |
 | --- | --- |
-| `npm run dev` | Dev server with HMR. Also serves `/api/contact` locally (see below). |
+| `npm run dev` | Dev server with HMR. |
 | `npm run build` | Type-checks, then builds to `dist/` (plus SEO pages, sitemap, robots). |
 | `npm run preview` | Serves the production build locally. |
 | `npm run typecheck` | TypeScript only. |
@@ -43,9 +41,8 @@ All copy and project data live in typed files under `src/data/` — components c
 | File | Contents |
 | --- | --- |
 | `profile.ts` | Name, titles, site URL and SEO defaults |
-| `contact.ts` | **Contact details, marketplace profile and platform-compliance switches** |
-| `content.ts` | Section copy: hero, about, experience, process, contact, footer |
-| `projects.ts` | Project cards (featured projects get a case study) |
+| `content.ts` | Section copy: hero, about, experience, process, footer, intro |
+| `projects.ts` | Project cards (featured projects get a case study) and the `showProjectLinks` switch |
 | `case-studies.ts` | Case-study narrative, architecture layers, decisions, results |
 | `skills.ts` | Expertise categories and the core-technology strip |
 | `services.ts` | Service cards |
@@ -55,41 +52,19 @@ All copy and project data live in typed files under `src/data/` — components c
 testimonials or technologies. Case-study text is derived strictly from the project facts;
 extend it as more details (screenshots, diagrams, measured results) become available.
 
-### Contact details & marketplace compliance
+### No contact options (marketplace compliance)
 
-Everything about how visitors can reach Artem lives in **`src/data/contact.ts`**: identity, location,
-email, phone, WhatsApp, LinkedIn, GitHub, website, the marketplace profile, and the
-`platformCompliance` switches. It drives the contact card, footer, inquiry form, error fallbacks
-and the Person structured data. Nothing else in the codebase reads contact details directly.
+The site is built to be shared on freelance marketplaces, many of which (e.g. Upwork before a
+contract starts, Fiverr) prohibit sharing email addresses, phone numbers, messaging apps, social
+profiles or other off-platform contact routes. It therefore has **no contact section, contact
+buttons, forms or contact details anywhere**: not in the pages, the footer, the page metadata or
+the structured data. Visitors reach Artem through the marketplace where they found the portfolio.
 
-Each method has **two independent switches**: its value (empty = not provided) and its
-`platformCompliance` flag (`false` = never rendered, including in metadata). Malformed or non-HTTPS
-values are ignored even when allowed.
-
-**Shipped defaults are the strictest setting**: only marketplace messaging is enabled, and the
-inquiry form sends nothing off-site. Before enabling anything else, check the *current* rules of
-every marketplace that links to this site and enable only what all of them permit. Many platforms
-(e.g. Upwork before a contract starts, Fiverr) prohibit sharing email, phone, messaging apps or
-social links. Never work around a disabled flag with images, QR codes, metadata or hidden markup.
-
-| Flag | Shows |
-| --- | --- |
-| `allowPlatformMessaging` | "Message me on <marketplace>" — needs `marketplace.name` + the real `marketplace.profileUrl` |
-| `allowEmail` / `allowPhone` / `allowWhatsApp` | `mailto:` / `tel:` / `wa.me` links |
-| `allowLinkedIn` / `allowGitHub` / `allowExternalWebsite` | Profile and website links |
-| `allowExternalFormSubmission` | Inquiry form emails you (asks for the sender's email); off = "brief" mode |
-| `allowProjectLinks` | Live links to finished client projects (portfolio evidence, not contact channels) |
-
-The **"Contact Me"** button goes to the marketplace profile when configured, otherwise email (if
-allowed), otherwise the on-page inquiry form.
-
-The **project inquiry form** (name, project type, optional budget, description) has two modes:
-
-- **Brief mode** (default): nothing leaves the browser. The visitor gets a formatted project brief
-  to copy and send through marketplace messaging, with a button to open the marketplace when configured.
-- **Send mode** (`allowExternalFormSubmission: true`): posts to `/api/contact`, which emails the
-  inquiry via Resend (see below). Rapid repeat clicks send one request, and an identical inquiry
-  isn't sent twice.
+Keep it that way: don't add contact details or invitations to message off-platform, and never
+put them in images, QR codes, metadata or hidden markup. The only outbound links are the "Visit"
+links to finished client websites on the project cards (portfolio evidence, not contact channels);
+set `showProjectLinks` in `src/data/projects.ts` to `false` if a marketplace you use doesn't allow
+external links.
 
 ### Intro animation
 
@@ -132,41 +107,6 @@ selected by the `visual` key in `projects.ts`. Mockup text is abstract by design
 so it never implies data that doesn't exist. To use a real screenshot instead, place an optimised
 image in `public/images/projects/` and render it in `ProjectCard` in place of `ProjectVisual`.
 
-## Email delivery for the inquiry form (optional)
-
-Only needed if you enable `allowExternalFormSubmission` in `src/data/contact.ts` — and only if your
-marketplace's rules permit it. In send mode the form posts JSON to `/api/contact` (`api/contact.ts`),
-a Vercel function that emails the inquiry through [Resend](https://resend.com).
-**No secrets are exposed to the browser.**
-
-### Environment variables
-
-Copy `.env.example` to `.env.local` for local development, and add the same variables in
-**Vercel → Project → Settings → Environment Variables** for production.
-
-| Variable | Required | Description |
-| --- | --- | --- |
-| `RESEND_API_KEY` | yes | Resend API key (server-only) |
-| `CONTACT_TO_EMAIL` | yes | Recipient address(es), comma-separated |
-| `CONTACT_FROM_EMAIL` | no | Verified sender, e.g. `Portfolio <hello@yourdomain.com>`. Defaults to Resend's test sender, which can only deliver to the Resend account owner's address. |
-| `VITE_CONTACT_ENDPOINT` | no | Public override for the form endpoint (e.g. a Formspree URL). Defaults to `/api/contact`. |
-
-Setup steps:
-
-1. Create a Resend account and an API key.
-2. (Recommended) Verify your sending domain in Resend and set `CONTACT_FROM_EMAIL`.
-3. Set the variables above in Vercel and redeploy.
-
-**Graceful fallback:** without credentials the function returns `503`, and the form shows a
-neutral "temporarily unavailable" message plus a *permitted* alternative (marketplace or email, if enabled).
-
-**Spam protection:** hidden honeypot field + minimum fill time (bots get a fake success and nothing
-is sent), server-side validation and length limits. For heavier traffic, add Cloudflare Turnstile
-or a rate limiter (e.g. Upstash) in `api/contact.ts`.
-
-**Local testing:** `npm run dev` emulates `/api/contact` (`config/dev-api-plugin.ts`) using the
-variables from `.env.local`, so the full flow works without the Vercel CLI.
-
 ## SEO
 
 - Head tags, Open Graph/Twitter cards and **Person JSON-LD** are generated from `src/data/profile.ts`
@@ -175,14 +115,14 @@ variables from `.env.local`, so the full flow works without the Vercel CLI.
   route-specific title, description and canonical URL, so link previews and non-JS crawlers see the
   right metadata.
 - `sitemap.xml` and `robots.txt` are generated into `dist/` on every build.
-- Changing domains? Update `site.url` in `profile.ts` and `website` in `contact.ts`.
-- Structured data only includes contact methods permitted by `platformCompliance`.
+- Changing domains? Update `site.url` in `profile.ts`.
+- The Person structured data contains no contact details (no email, phone, social or marketplace links).
 - The OG image (`public/og-image.png`, 1200×630) and favicons are static files in `public/`.
 
 ## Performance
 
 - Vendor code is split into long-cacheable chunks (`react`, `router`, `motion`).
-- Case-study pages, the inquiry form (React Hook Form + Zod) and brand-icon data load lazily.
+- Case-study pages and brand-icon data load lazily.
 - The Latin Geist font file is preloaded; other subsets load only when needed.
 - Animations are transform/opacity only, play once on reveal, and are disabled for users who prefer
   reduced motion. The hero's data "packets" only run while the hero is on screen.
@@ -191,7 +131,7 @@ variables from `.env.local`, so the full flow works without the Vercel CLI.
 
 1. Push the repository to GitHub and import it in Vercel (framework preset: **Vite**).
 2. Build command `npm run build`, output directory `dist` (already set in `vercel.json`).
-3. Add the environment variables above, then deploy.
+3. Deploy. No environment variables are needed.
 
 `vercel.json` adds SPA rewrites (excluding `/api` and static files), long-term caching for hashed
 assets and baseline security headers.
@@ -199,22 +139,21 @@ assets and baseline security headers.
 ## Project structure
 
 ```
-api/contact.ts            Vercel function (send mode only): validated, spam-filtered inquiry email via Resend
-config/                   Build plugins: SEO/sitemap/robots, font preload, local /api emulation
+config/                   Build plugins: SEO/sitemap/robots, font preload
 public/                   favicon.ico/.svg, touch & PWA icons, og-image.png, site.webmanifest
 src/
   components/
     intro/                Full-screen intro (provider, overlay, timeline, ribbon geometry, styles)
     layout/               Navbar, Footer, Container, Logo, ScrollManager
     sections/             Hero (+ interactive HeroVisual), TechHighlights, About, Expertise,
-                          Projects, Services, Experience, Process, Contact (+ lazy InquiryForm)
+                          Projects, Services, Experience, Process
     ui/                   Button, SectionHeading, AnimatedSection, ProjectCard, SkillCard,
                           ServiceCard, SpotlightCard, TechChip, IconBadge, BrandIcon
     visuals/              Original CSS product mockups for each project
     case-study/           ArchitectureDiagram
-  data/                   All site content (see "Editing content"); contact.ts = contact & compliance
+  data/                   All site content (see "Editing content")
   hooks/                  Scroll-spy, page metadata, scroll state, reduced motion
-  lib/                    Icons, motion presets, contact client + schema, helpers
+  lib/                    Icons, motion presets, helpers
   pages/                  HomePage, CaseStudyPage (lazy), NotFoundPage
   styles/index.css        Design tokens and utilities
   types/                  Shared content types

@@ -13,7 +13,7 @@ const MODIFIER_KEYS = new Set(['Shift', 'Control', 'Alt', 'Meta', 'CapsLock', 'F
  * (the provider lives above the router and is never remounted). No storage is involved.
  *
  * The page renders underneath from the start, so content, fonts and lazy chunks load in parallel
- * and scroll targets (`/#contact`) resolve normally; `useIntroRevealed()` lets entrance animations
+ * and scroll targets (`/#projects`) resolve normally; `useIntroRevealed()` lets entrance animations
  * wait until the overlay starts to dissolve.
  */
 export function IntroProvider({ children }: { children: ReactNode }) {

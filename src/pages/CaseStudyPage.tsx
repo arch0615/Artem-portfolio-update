@@ -12,7 +12,6 @@ import { cn } from '@/lib/cn'
 import { Container } from '@/components/layout/Container'
 import { ArchitectureDiagram } from '@/components/case-study/ArchitectureDiagram'
 import { Reveal, Stagger, StaggerItem } from '@/components/ui/AnimatedSection'
-import { ButtonLink } from '@/components/ui/Button'
 import { SpotlightCard } from '@/components/ui/SpotlightCard'
 import { TechChip } from '@/components/ui/TechChip'
 import { ProjectVisual } from '@/components/visuals/ProjectVisual'
@@ -262,35 +261,11 @@ function CaseStudyView({ project, study }: { project: Project; study: CaseStudy 
       </Container>
 
       {/* Navigation between case studies */}
-      <Container className="pb-12">
+      <Container className="pb-24 sm:pb-32">
         <nav aria-label="More case studies" className="grid gap-4 border-t border-line pt-12 sm:grid-cols-2">
           <CaseLink project={previous} direction="previous" />
           <CaseLink project={next} direction="next" />
         </nav>
-      </Container>
-
-      <Container className="pb-24 sm:pb-32">
-        <Reveal>
-          <div className="relative overflow-hidden rounded-3xl border border-line bg-elevated/60 p-8 text-center sm:p-14">
-            <div aria-hidden className="bg-grid absolute inset-0 mask-radial-center opacity-50" />
-            <div aria-hidden className="absolute -top-24 left-1/2 h-48 w-[36rem] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,rgb(99_102_241/0.25),transparent)]" />
-            <h2 className="relative text-3xl font-semibold tracking-tight text-fg sm:text-4xl">
-              Have a similar challenge?
-            </h2>
-            <p className="relative mx-auto mt-4 max-w-lg text-fg-muted">
-              Let’s talk about your product, the problem it needs to solve and how to build it properly.
-            </p>
-            <div className="relative mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-              <ButtonLink to="/#contact" size="lg">
-                Start a conversation
-                <ArrowRight aria-hidden className="size-4 transition-transform duration-200 group-hover/btn:translate-x-0.5" />
-              </ButtonLink>
-              <ButtonLink to="/#projects" variant="secondary" size="lg">
-                Explore more work
-              </ButtonLink>
-            </div>
-          </div>
-        </Reveal>
       </Container>
     </article>
   )

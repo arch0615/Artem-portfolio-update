@@ -26,7 +26,7 @@ export function Hero() {
   const enter = entrance(useIntroRevealed())
 
   return (
-    <section id="home" aria-labelledby="hero-title" className="relative isolate overflow-hidden scroll-mt-20">
+    <section id="home" aria-labelledby="hero-title" className="relative isolate overflow-hidden">
       <HeroBackground />
 
       <Container className="relative pt-32 pb-24 sm:pt-36 lg:pt-40 lg:pb-32">

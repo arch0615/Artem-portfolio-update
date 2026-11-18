@@ -1,18 +1,16 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router'
 import { AnimatePresence, m } from 'framer-motion'
-import { ArrowRight, ArrowUpRight, Menu, X } from 'lucide-react'
-import { navCta, navigation } from '@/data/navigation'
+import { ArrowUpRight, Menu, X } from 'lucide-react'
+import { navigation } from '@/data/navigation'
 import { useActiveSection } from '@/hooks/useActiveSection'
 import { useScrolled } from '@/hooks/useScrolled'
 import { cn } from '@/lib/cn'
 import { easeOutExpo } from '@/lib/motion'
-import { ButtonLink } from '@/components/ui/Button'
 import { Container } from './Container'
 import { Logo } from './Logo'
 
-// Contact is tracked too (though not in the menu), so no menu item stays highlighted there.
-const sectionIds = [...navigation.map((item) => item.id), navCta.id]
+const sectionIds = navigation.map((item) => item.id)
 const noSections: string[] = []
 
 export function Navbar() {
@@ -94,14 +92,7 @@ export function Navbar() {
             </ul>
           </nav>
 
-          <div className="flex items-center gap-2">
-            <div className="hidden lg:block">
-              <ButtonLink to={`/#${navCta.id}`} size="sm">
-                {navCta.label}
-                <ArrowRight aria-hidden className="size-4 transition-transform duration-200 group-hover/btn:translate-x-0.5" />
-              </ButtonLink>
-            </div>
-
+          <div className="flex items-center gap-2 lg:hidden">
             <button
               ref={toggleRef}
               type="button"
@@ -184,10 +175,6 @@ export function Navbar() {
                       )
                     })}
                   </ul>
-                  <ButtonLink to={`/#${navCta.id}`} onClick={close} size="lg" className="mt-5 w-full">
-                    {navCta.label}
-                    <ArrowRight aria-hidden className="size-4" />
-                  </ButtonLink>
                 </nav>
               </Container>
             </m.div>

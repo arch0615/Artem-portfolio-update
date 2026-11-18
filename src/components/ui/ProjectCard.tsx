@@ -2,7 +2,7 @@ import { Link } from 'react-router'
 import { ArrowRight, ArrowUpRight, Check } from 'lucide-react'
 import type { Project } from '@/types'
 import { cn } from '@/lib/cn'
-import { areProjectLinksAllowed } from '@/data/contact'
+import { showProjectLinks } from '@/data/projects'
 import { ProjectVisual } from '@/components/visuals/ProjectVisual'
 import { ButtonLink } from './Button'
 import { SpotlightCard } from './SpotlightCard'
@@ -166,7 +166,7 @@ export function ProjectCard({ project, className, wideOnTablet = false }: Projec
             </ul>
           )}
 
-          {areProjectLinksAllowed() && project.links && project.links.length > 0 && (
+          {showProjectLinks && project.links && project.links.length > 0 && (
             <ul className="mt-auto space-y-1 pt-6" aria-label={`${project.name} links`}>
               {project.links.map((link) => (
                 <li key={link.href}>

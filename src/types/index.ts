@@ -50,63 +50,6 @@ export interface NavItem {
   label: string
 }
 
-/** Ways a visitor can reach Artem. `platform` = messaging on a freelance marketplace. */
-export type ContactMethodKey = 'platform' | 'email' | 'phone' | 'whatsapp' | 'linkedin' | 'github' | 'website'
-
-/** A contact method that is both configured and permitted — safe to render. */
-export interface ContactMethod {
-  key: ContactMethodKey
-  label: string
-  /** Human-readable value, e.g. the email address or profile handle. */
-  display: string
-  href: string
-  /** Opens in a new tab (http links). */
-  external: boolean
-}
-
-/** Independent visibility switch per contact method. `false` = never rendered anywhere. */
-export interface PlatformCompliance {
-  allowEmail: boolean
-  allowPhone: boolean
-  allowWhatsApp: boolean
-  allowLinkedIn: boolean
-  allowGitHub: boolean
-  allowExternalWebsite: boolean
-  allowPlatformMessaging: boolean
-  /** Deliver inquiry-form messages by email (server-side). */
-  allowExternalFormSubmission: boolean
-  /** Show live links to finished client projects (portfolio evidence, not contact channels). */
-  allowProjectLinks: boolean
-}
-
-export interface ContactConfig {
-  fullName: string
-  title: string
-  specialty: string
-  introduction: string
-  availability: string
-  location: string
-  email: string
-  phone: string
-  whatsapp: string
-  linkedin: string
-  github: string
-  website: string
-  marketplace: {
-    name: string
-    profileUrl: string
-  }
-  platformCompliance: PlatformCompliance
-}
-
-export interface PrimaryContactAction {
-  kind: 'platform' | 'email' | 'form'
-  href: string
-  external: boolean
-  /** Short explanation shown under the button. */
-  hint: string
-}
-
 export interface Highlight {
   label: string
   icon: IconName

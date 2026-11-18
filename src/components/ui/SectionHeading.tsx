@@ -29,7 +29,7 @@ export function SectionHeading({ id, eyebrow, title, description, align = 'left'
   )
 }
 
-export function Eyebrow({ children, centered = false }: { children: ReactNode; centered?: boolean }) {
+function Eyebrow({ children, centered = false }: { children: ReactNode; centered?: boolean }) {
   return (
     <p
       className={cn(

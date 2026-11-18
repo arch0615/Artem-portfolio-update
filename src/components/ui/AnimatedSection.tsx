@@ -17,7 +17,7 @@ export function AnimatedSection({ id, labelledBy, className, children, ...props 
     <section
       id={id}
       aria-labelledby={labelledBy}
-      className={cn('relative scroll-mt-20 py-24 sm:py-28 lg:py-32', className)}
+      className={cn('relative py-24 sm:py-28 lg:py-32', className)}
       {...props}
     >
       {children}

@@ -1,7 +1,7 @@
 import type { Highlight } from '../types'
 
 /**
- * Identity and site-wide SEO configuration. Contact details live in `contact.ts`.
+ * Identity and site-wide SEO configuration. The site intentionally publishes no contact details.
  *
  * NOTE: this file is imported by the build-time SEO plugin (`config/seo-plugin.ts`),
  * so keep it free of browser APIs, React and `@/` path aliases.
@@ -17,7 +17,6 @@ export const profile = {
   experienceYears: 17,
   positioning:
     'I build intelligent digital products, scalable web applications, mobile experiences, and AI-powered automation systems.',
-  availability: 'Available for select projects',
 } as const
 
 export const site = {

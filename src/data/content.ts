@@ -9,8 +9,8 @@ export const heroContent = {
     "I'm Artem Bohomolov, an AI Full-Stack Developer specializing in modern web applications, mobile development, AI integrations, and intelligent automation.",
     'I turn complex ideas into scalable digital products that solve real business problems.',
   ],
-  primaryCta: { label: 'Explore My Work', id: 'projects' },
-  secondaryCta: { label: "Let's Work Together", id: 'contact' },
+  primaryCta: { label: 'Explore My Projects', id: 'projects' },
+  secondaryCta: { label: 'View My Expertise', id: 'expertise' },
 }
 
 export const aboutContent = {
@@ -142,17 +142,6 @@ export const processSteps: ProcessStep[] = [
     icon: 'rocket',
   },
 ]
-
-export const contactContent = {
-  eyebrow: 'Contact',
-  title: "Let's Work Together",
-  subheadline: "Have a project in mind? Let's turn your idea into reality.",
-  paragraphs: [
-    "I'm always interested in discussing innovative projects, AI-powered applications, mobile development, and business automation opportunities.",
-    "Whether you need a complete software product, an AI integration, or a custom automation solution, I'd be happy to discuss your requirements.",
-  ],
-  formTitle: 'Project inquiry',
-}
 
 export const footerContent = {
   tagline: 'Mobile Apps | AI Integration | Automation',

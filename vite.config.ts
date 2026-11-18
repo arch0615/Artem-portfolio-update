@@ -1,20 +1,12 @@
 import { fileURLToPath, URL } from 'node:url'
-import { defineConfig, loadEnv } from 'vite'
+import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { fontPreloadPlugin, seoPlugin } from './config/seo-plugin.ts'
-import { devApiPlugin } from './config/dev-api-plugin.ts'
 
-export default defineConfig(({ mode }) => {
-  // Expose server-only variables (RESEND_API_KEY, …) to the local /api emulation.
-  // They are never bundled into client code — only VITE_* variables are.
-  const env = loadEnv(mode, process.cwd(), '')
-  for (const [key, value] of Object.entries(env)) {
-    process.env[key] ??= value
-  }
-
+export default defineConfig(() => {
   return {
-    plugins: [react(), tailwindcss(), seoPlugin(), fontPreloadPlugin(), devApiPlugin()],
+    plugins: [react(), tailwindcss(), seoPlugin(), fontPreloadPlugin()],
     resolve: {
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url)),

@@ -1,6 +1,13 @@
 import type { Project } from '../types'
 
 /**
+ * Show the "Visit" links to finished client projects on the project cards. These are portfolio
+ * evidence (the delivered websites), not contact channels. Set to `false` if a marketplace you
+ * use doesn't allow external links on your portfolio.
+ */
+export const showProjectLinks = true
+
+/**
  * Portfolio projects. Only real, verified information belongs here:
  * no invented clients, URLs, statistics or technologies.
  *

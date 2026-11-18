@@ -1,7 +1,6 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import type { Plugin, ResolvedConfig } from 'vite'
-import { getStructuredDataContacts } from '../src/data/contact.ts'
 import { knowsAbout, profile, site } from '../src/data/profile.ts'
 import { projects } from '../src/data/projects.ts'
 import { caseStudies } from '../src/data/case-studies.ts'
@@ -31,9 +30,11 @@ const escapeHtml = (value: string) =>
 
 const absoluteUrl = (pathname: string) => new URL(pathname, site.url).toString()
 
+/**
+ * Person structured data. Deliberately carries no contact details (email, phone, social or
+ * marketplace profiles), in line with the site's no-off-platform-contact policy.
+ */
 function personSchema() {
-  // Only contact methods permitted by `platformCompliance` reach the metadata.
-  const { sameAs, email } = getStructuredDataContacts()
   return {
     '@context': 'https://schema.org',
     '@type': 'Person',
@@ -43,8 +44,6 @@ function personSchema() {
     jobTitle: profile.title,
     description: site.description,
     knowsAbout,
-    ...(sameAs.length ? { sameAs } : {}),
-    ...(email ? { email } : {}),
   }
 }
 

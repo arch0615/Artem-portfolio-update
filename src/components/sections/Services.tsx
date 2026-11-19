@@ -7,7 +7,7 @@ import { ServiceCard } from '@/components/ui/ServiceCard'
 
 export function Services() {
   return (
-    <AnimatedSection id="services" labelledBy="services-title" className="bg-surface/30">
+    <AnimatedSection id="services" labelledBy="services-title">
       <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-line-strong to-transparent" />
       <Container>
         <SectionHeading

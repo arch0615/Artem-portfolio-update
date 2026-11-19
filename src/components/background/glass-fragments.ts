@@ -1,11 +1,15 @@
+import { seededRandom } from './random'
+
 /**
- * Glass fragments behind the hero: a few nearly transparent cubes floating freely in 3D space.
+ * Glass fragments of the global space background: a few nearly transparent cubes floating freely
+ * in 3D space behind every page.
  *
  * Motion: a small perspective projection (no 3D library). Every fragment has its own size, depth,
  * drift speed and slowly turning heading, wandering path, tumble axis and spin speed. All of these
  * keep changing slowly, so no two fragments move alike and nothing repeats in step. Some drift across
  * the screen, some diagonally, some mostly toward and away from the camera; nearer ones are larger
- * and move faster on screen (parallax).
+ * and move faster on screen (parallax). The camera can also be moved vertically (`render`'s second
+ * argument), which slides near fragments past faster than distant ones.
  *
  * Look: faces are 3–8 % opaque glass, shaded by angle (faces seen edge-on and faces catching the
  * light from the upper left are a little brighter). Edges are hair-thin lines that brighten when they
@@ -13,8 +17,8 @@
  *
  * Rendering: each fragment draws into its own small canvas, just big enough for the cube, which is
  * moved with a CSS transform; its glow is a CSS gradient that the compositor moves and scales. Only
- * the cubes' own pixels are redrawn each frame, never the whole hero, so it stays cheap even where
- * the browser draws canvases without the GPU.
+ * the cubes' own pixels are redrawn, never the whole screen, so it stays cheap even where the
+ * browser draws canvases without the GPU.
  */
 
 type Vec3 = [number, number, number]
@@ -73,8 +77,11 @@ interface Fragment extends Motion {
 export interface GlassFragments {
   /** Matches the layout to the container's size (call when it changes). */
   resize(): void
-  /** Advances the simulation by `dt` seconds (0 = still frame) and draws it. */
-  render(dt: number): void
+  /**
+   * Advances the simulation by `dt` seconds (0 = still frame) and draws it, seen from a camera
+   * moved `camera` world units down (1 unit = 1 px at the focal plane).
+   */
+  render(dt: number, camera?: number): void
   /** Removes the fragments' elements. */
   destroy(): void
 }
@@ -88,8 +95,8 @@ const WHITE: Vec3 = [235, 240, 255]
 /** Direction towards the light: upper left, slightly in front. */
 const LIGHT = normalize([-0.4, -0.75, -0.5])
 
-/** Fewer fragments on smaller screens. */
-const fragmentCount = (width: number) => (width < 640 ? 5 : width < 1024 ? 8 : 12)
+/** Fragments per viewport width: fewer on smaller screens. */
+const fragmentCount = (width: number) => (width < 640 ? 5 : width < 1024 ? 8 : width < 1680 ? 12 : 14)
 
 // Cube corners: bit 0 = +x, bit 1 = +y, bit 2 = +z. Faces as corner loops around their axis.
 const FACES: { axis: 0 | 1 | 2; sign: 1 | -1; corners: [number, number, number, number] }[] = [
@@ -120,15 +127,6 @@ const mix = (a: Vec3, b: Vec3, t: number): Vec3 => [a[0] + (b[0] - a[0]) * t, a[
 const rgba = (c: Vec3, alpha: number) => `rgba(${c[0] | 0},${c[1] | 0},${c[2] | 0},${alpha.toFixed(3)})`
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value))
 
-/** Deterministic random numbers (mulberry32), so the composition is the same on every visit. */
-function seededRandom(seed: number) {
-  return () => {
-    seed = (seed + 0x6d2b79f5) | 0
-    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed)
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296
-  }
-}
 
 function zAt(d: Motion['depth'], t: number) {
   return d[0] + d[1] * (0.65 * Math.sin(d[2] * t + d[3]) + 0.35 * Math.sin(d[4] * t + d[5]))
@@ -211,6 +209,7 @@ export function createGlassFragments(container: HTMLElement): GlassFragments {
   let height = 0
   let dpr = 1
   let time = 0
+  let camera = 0
 
   // Scratch buffers for one cube: projected corners and per-face view/lighting terms.
   const screen = new Float64Array(16)
@@ -298,7 +297,7 @@ export function createGlassFragments(container: HTMLElement): GlassFragments {
     fragment.z = zAt(fragment.depth, time)
     const project = () => {
       fragment.sx = width / 2 + ((fragment.x + wander(fragment.wanderX, time)) * F) / fragment.z
-      fragment.sy = height / 2 + ((fragment.y + wander(fragment.wanderY, time)) * F) / fragment.z
+      fragment.sy = height / 2 + ((fragment.y + wander(fragment.wanderY, time) - camera) * F) / fragment.z
     }
     project()
     // Wrap around once completely off screen (glow included), so drifting never runs out of space.
@@ -366,7 +365,7 @@ export function createGlassFragments(container: HTMLElement): GlassFragments {
       [2 * (x * zq + w * y), 2 * (y * zq - w * x), 1 - 2 * (x * x + y * y)],
     ]
     const cx = fragment.x + wander(fragment.wanderX, time)
-    const cy = fragment.y + wander(fragment.wanderY, time)
+    const cy = fragment.y + wander(fragment.wanderY, time) - camera
     let extent = 0
     for (let i = 0; i < 8; i++) {
       const sx = i & 1 ? half : -half
@@ -476,10 +475,11 @@ export function createGlassFragments(container: HTMLElement): GlassFragments {
     }
   }
 
-  function render(dt: number) {
+  function render(dt: number, cameraY = 0) {
     if (!width) resize()
     if (!width) return
     time += dt
+    camera = cameraY
     for (const fragment of fragments) step(fragment, dt)
     // Far fragments behind near ones.
     fragments.sort((a, b) => b.z - a.z)

@@ -5,6 +5,7 @@ import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 import { ScrollManager } from '@/components/layout/ScrollManager'
 import { IntroProvider } from '@/components/intro/IntroProvider'
+import { GlobalSpaceBackground } from '@/components/background/GlobalSpaceBackground'
 import { HomePage } from '@/pages/HomePage'
 import NotFoundPage from '@/pages/NotFoundPage'
 
@@ -14,10 +15,12 @@ export function App() {
   // LazyMotion + `m` components ship only the animation features in use (no layout/drag code).
   // MotionConfig honours the visitor's "reduce motion" OS setting for every animation.
   // IntroProvider plays the intro overlay on top of the page on every fresh page load.
+  // GlobalSpaceBackground sits behind every page and lives outside the routes, so it never restarts.
   return (
     <LazyMotion features={domAnimation} strict>
       <MotionConfig reducedMotion="user">
         <IntroProvider>
+          <GlobalSpaceBackground />
           <BrowserRouter>
             <ScrollManager />
             <a

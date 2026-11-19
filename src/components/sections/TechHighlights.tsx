@@ -13,7 +13,7 @@ const fallbackIcons: Record<string, typeof Cloud> = {
 
 export function TechHighlights() {
   return (
-    <section aria-labelledby="tech-title" className="relative border-y border-line bg-surface/50">
+    <section aria-labelledby="tech-title" className="relative border-y border-line">
       <Container className="py-10 sm:py-12">
         <h2
           id="tech-title"

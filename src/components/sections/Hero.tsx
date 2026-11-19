@@ -8,7 +8,6 @@ import { easeOutExpo } from '@/lib/motion'
 import { useIntroRevealed } from '@/components/intro/intro-context'
 import { Container } from '@/components/layout/Container'
 import { ButtonLink } from '@/components/ui/Button'
-import { HeroFragments } from './HeroFragments'
 import { HeroPortrait } from './HeroPortrait'
 
 const hidden = { opacity: 0, y: 18, filter: 'blur(6px)' }
@@ -114,9 +113,7 @@ function HeroBackground() {
       <div className="bg-grid absolute inset-0 mask-radial opacity-70" />
       <div className="absolute -top-48 left-1/2 h-[36rem] w-[64rem] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,rgb(99_102_241/0.22),transparent)]" />
       <div className="absolute top-40 -right-40 h-[30rem] w-[30rem] rounded-full bg-[radial-gradient(closest-side,rgb(139_92_246/0.14),transparent)]" />
-      <HeroFragments />
       <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-white/20 to-transparent" />
-      <div className="absolute inset-x-0 bottom-0 h-40 bg-linear-to-b from-transparent to-canvas" />
     </div>
   )
 }

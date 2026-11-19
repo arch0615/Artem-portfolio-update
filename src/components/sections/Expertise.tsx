@@ -8,7 +8,7 @@ import { ProductArchitecture } from './ProductArchitecture'
 
 export function Expertise() {
   return (
-    <AnimatedSection id="expertise" labelledBy="expertise-title" className="overflow-x-clip bg-surface/30">
+    <AnimatedSection id="expertise" labelledBy="expertise-title" className="overflow-x-clip">
       <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-line-strong to-transparent" />
       <Container>
         <div className="grid grid-cols-1 items-center gap-14 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1fr)] lg:gap-16">

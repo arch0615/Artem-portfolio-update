@@ -1,0 +1,120 @@
+/*
+ * Global space background (GlobalSpaceBackground.tsx), back to front:
+ * deep space, nebulae and stars → drifting clouds → space-time light waves → twinkling stars →
+ * glass fragments. The static parts are a single background (no layers of their own); what moves
+ * is a slow transform/opacity animation that the compositor runs on its own (no JavaScript per
+ * frame, no blur filters), so only a few layers are ever redrawn. Animations wait for the intro to
+ * dissolve (`data-live`) and are switched off for visitors who prefer reduced motion.
+ */
+
+/* Layer 1, static: darker edges, distant stars (an image drawn at runtime, `--space-stars`), a faint
+   electric-blue light deep in the scene, midnight-navy and violet nebulae, near-black space. */
+.space-bg {
+  background-color: #050509;
+  background-image:
+    radial-gradient(ellipse 110% 85% at 50% 42%, transparent 55%, rgb(5 5 9 / 0.75)),
+    var(--space-stars, linear-gradient(transparent, transparent)),
+    radial-gradient(ellipse 40% 26% at 50% 40%, rgb(99 102 241 / 0.06), transparent),
+    radial-gradient(ellipse 70% 55% at 50% 45%, rgb(10 16 32 / 0.85), transparent 72%),
+    radial-gradient(ellipse 50% 40% at 85% 10%, rgb(37 18 63 / 0.5), transparent 70%),
+    radial-gradient(ellipse 55% 45% at 8% 88%, rgb(24 36 74 / 0.4), transparent 70%),
+    linear-gradient(180deg, #050509, #09090b 45%, #050509);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+/* Two large, soft nebula clouds drifting very slowly: the space never looks frozen. */
+.space-cloud {
+  position: absolute;
+  border-radius: 50%;
+}
+
+.space-cloud-violet {
+  top: -22vmax;
+  right: -24vmax;
+  width: 80vmax;
+  height: 60vmax;
+  background: radial-gradient(closest-side, rgb(37 18 63 / 0.55), rgb(37 18 63 / 0.2) 55%, transparent);
+  animation: space-drift-violet 90s ease-in-out infinite alternate;
+}
+
+.space-cloud-blue {
+  bottom: -28vmax;
+  left: -30vmax;
+  width: 90vmax;
+  height: 65vmax;
+  background: radial-gradient(closest-side, rgb(24 36 74 / 0.55), rgb(24 36 74 / 0.18) 55%, transparent);
+  animation: space-drift-blue 115s ease-in-out infinite alternate;
+}
+
+@keyframes space-drift-violet {
+  to {
+    transform: translate3d(-7vmax, 6vmax, 0) rotate(10deg) scale(1.12);
+  }
+}
+
+@keyframes space-drift-blue {
+  to {
+    transform: translate3d(8vmax, -5vmax, 0) rotate(-8deg) scale(1.1);
+  }
+}
+
+/* Space-time: faint light waves flowing slowly across. Each wave repeats over half the SVG's
+   width, so sliding it by half loops seamlessly. */
+.space-waves {
+  position: absolute;
+  top: 30%;
+  left: 0;
+  width: 200%;
+  height: 50%;
+  overflow: visible;
+  animation: space-flow 160s linear infinite;
+}
+
+@keyframes space-flow {
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+/* Layer 2, moving: a few twinkling stars on top of the static field. */
+.space-twinkle {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgb(240 244 255) 0 14%, rgb(180 195 255 / 0.45) 30%, transparent 68%);
+  opacity: 0.4;
+  animation: space-twinkle 6s ease-in-out infinite;
+}
+
+@keyframes space-twinkle {
+  0%,
+  100% {
+    opacity: 0.12;
+    transform: scale(0.6);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1);
+  }
+}
+
+/* Phones: fewer twinkling stars, and fainter waves (they curve more tightly on a narrow screen). */
+@media (max-width: 639px) {
+  .space-twinkle:nth-of-type(n + 11) {
+    display: none;
+  }
+
+  .space-waves {
+    opacity: 0.6;
+  }
+}
+
+.space-bg:not([data-live]) .space-anim {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .space-anim {
+    animation: none !important;
+  }
+}

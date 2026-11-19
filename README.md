@@ -127,26 +127,41 @@ the same name (or update `video.sources`) and set `video.width`/`video.height` t
 Remove `video` to show the still image only. To replace the photo, export new
 `portrait-480/768/1024.webp` files under the same names and update `width`/`height`.
 
-### Hero background (glass fragments)
+### Global space background
 
-Behind the hero content, a few nearly transparent glass cubes float freely in 3D space
-(`HeroFragments.tsx`; motion and drawing in `glass-fragments.ts`):
+The whole site floats in one continuous, dark 3D space: a single fixed, full-viewport layer behind
+every page (`src/components/background/`, mounted once in `App.tsx`, outside the routes, so it never
+restarts while navigating). Sections have no full-width backgrounds of their own; cards, borders and
+local glows (e.g. in the hero) sit on top of it. Back to front:
 
-- **Look:** faces are 3–8 % opaque glass, shaded by angle, with hair-thin blue/violet edges that
-  brighten where they catch the light (from the upper left) and a very faint glow behind each cube.
-  They sit in the hero background, behind the text, buttons, portrait and navbar, and never take
-  clicks or taps.
-- **Movement:** every cube has its own size, depth, drift speed and slowly turning heading,
-  wandering path, tumble axis and spin speed. Some cross the screen, some drift diagonally, some move
-  toward and away from the camera; a cube that leaves one edge returns at the other once out of view.
-- **Performance:** 12 cubes on desktop, 8 on tablets, 5 on phones. Each cube has its own small
-  canvas that the compositor moves; it's repainted only when its outline visibly changes, and its
-  glow is a CSS gradient. Nothing runs before the intro dissolves or while the hero is off screen, and
-  devices that can't keep up drop to about 30 fps. Visitors who prefer reduced motion see a still frame.
+1. **Deep space** (`space.css`): near-black (`#050509`) with midnight-navy and violet nebulae, a faint
+   electric-blue light, darker edges, two slowly drifting nebula clouds and faint flowing
+   "space-time" light waves.
+2. **Stars** (`starfield.ts`): a static field (sparser on phones) drawn once into an image, plus 24
+   twinkling stars (10 on phones).
+3. **Glass fragments** (`GlassFragments.tsx`, motion and drawing in `glass-fragments.ts`): nearly
+   transparent cubes floating freely in 3D: 3–8 % opaque faces shaded by angle, hair-thin blue/violet
+   edges that brighten where they catch the light, a very faint glow. Every cube has its own size,
+   depth, drift speed and slowly turning heading, wandering path, tumble axis and spin speed: some
+   cross the screen, some drift diagonally, some move toward and away from the viewer. Scrolling
+   slides them past at a depth-dependent rate (near ones faster), as if moving through the space;
+   instant jumps (opening a page, back/forward) don't move them.
 
-To tune it: the number of cubes per screen size is `fragmentCount`, the colours are `BLUE` and
-`VIOLET`, and face and edge opacity are set in `draw()`. To turn it off, remove `<HeroFragments />`
-from `HeroBackground` in `Hero.tsx`.
+It never takes clicks or taps, and doesn't cause sideways scrolling. It's sized to the largest
+viewport height, so it doesn't resize when a phone's address bar shows or hides.
+
+- **Performance:** the static parts are one background with no layers of their own; the clouds,
+  waves and twinkles are slow transform/opacity animations the compositor runs on its own (no blur
+  filters). Cubes: 14 on wide screens, 12 on desktop, 8 on tablets, 5 on phones. Each has its own small
+  canvas that the compositor moves; it's repainted only when its outline visibly changes, and its glow
+  is a CSS gradient. Phones, and devices that can't keep up, update the cubes at about 30 fps.
+- **Intro and reduced motion:** the animations start as the intro dissolves (the cubes once it has
+  finished). Visitors who prefer reduced motion see a still version of the whole background.
+
+To tune it: colours and nebulae are at the top of `space.css`; the number of cubes per screen size is
+`fragmentCount`, their colours `BLUE` and `VIOLET`, face and edge opacity in `draw()`
+(`glass-fragments.ts`), and the scroll effect `PARALLAX` (`GlassFragments.tsx`). To turn the whole
+background off, remove `<GlobalSpaceBackground />` from `App.tsx`.
 
 ### Project visuals
 
@@ -173,8 +188,8 @@ image in `public/images/projects/` and render it in `ProjectCard` in place of `P
 - Case-study pages and brand-icon data load lazily.
 - The Latin Geist font file is preloaded; other subsets load only when needed.
 - Animations are transform/opacity only, play once on reveal, and are disabled for users who prefer
-  reduced motion. The architecture graph's data "packets", the portrait clip and the hero's glass
-  fragments only run while on screen.
+  reduced motion. The architecture graph's data "packets" and the portrait clip only run while on
+  screen; the global background is built to stay cheap (see "Global space background").
 
 ## Deployment (Vercel)
 
@@ -193,9 +208,10 @@ public/                   favicon.ico/.svg, touch & PWA icons, og-image.png, sit
                           images/portrait-*.webp and videos/portrait.mp4 (hero portrait)
 src/
   components/
+    background/           Global space background (nebulae, stars, light waves, glass fragments)
     intro/                Full-screen intro (provider, overlay, timeline, ribbon geometry, styles)
     layout/               Navbar, Footer, Container, Logo, ScrollManager
-    sections/             Hero (+ HeroPortrait, HeroFragments), TechHighlights, About, Expertise (+ interactive
+    sections/             Hero (+ HeroPortrait), TechHighlights, About, Expertise (+ interactive
                           ProductArchitecture graph), Projects, Services, Experience, Process
     ui/                   Button, SectionHeading, AnimatedSection, ProjectCard, SkillCard,
                           ServiceCard, SpotlightCard, TechChip, IconBadge, BrandIcon

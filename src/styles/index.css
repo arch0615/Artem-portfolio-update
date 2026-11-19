@@ -9,6 +9,7 @@
   --font-mono: 'Geist Mono Variable', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
   /* Surfaces */
+  --color-space: #050509;
   --color-canvas: #09090b;
   --color-surface: #111114;
   --color-elevated: #15151a;
@@ -77,8 +78,10 @@
    ========================================================================== */
 
 @layer base {
+  /* The page itself is deep space; the global background layer (GlobalSpaceBackground) is fixed
+     behind all content, so body paints no background of its own (it would cover the layer). */
   html {
-    background-color: var(--color-canvas);
+    background-color: var(--color-space);
     color-scheme: dark;
     -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: transparent;
@@ -100,7 +103,6 @@
 
   body {
     min-height: 100dvh;
-    background-color: var(--color-canvas);
     color: var(--color-fg);
     font-family: var(--font-sans);
     font-feature-settings: 'ss01', 'cv11';

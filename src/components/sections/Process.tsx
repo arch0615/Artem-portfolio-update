@@ -8,7 +8,7 @@ import { SectionHeading } from '@/components/ui/SectionHeading'
 
 export function Process() {
   return (
-    <AnimatedSection id="process" labelledBy="process-title" className="bg-surface/30">
+    <AnimatedSection id="process" labelledBy="process-title">
       <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-line-strong to-transparent" />
       <Container>
         <SectionHeading

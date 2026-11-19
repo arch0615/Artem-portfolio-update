@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState, type ReactNode } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react'
 import { AnimatePresence } from 'framer-motion'
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion'
 import { IntroAnimation } from './IntroAnimation'
@@ -12,15 +12,53 @@ const MODIFIER_KEYS = new Set(['Shift', 'Control', 'Alt', 'Meta', 'CapsLock', 'F
  * Plays the intro once per page load — every fresh visit or refresh, never on in-app navigation
  * (the provider lives above the router and is never remounted). No storage is involved.
  *
- * The page renders underneath from the start, so content, fonts and lazy chunks load in parallel
- * and scroll targets (`/#projects`) resolve normally; `useIntroRevealed()` lets entrance animations
- * wait until the overlay starts to dissolve.
+ * The page renders underneath from the start, so content, fonts and lazy chunks load in parallel;
+ * `useIntroRevealed()` lets entrance animations wait until the overlay starts to dissolve. The page
+ * stays at the top while it is covered, so the visitor always lands on Home.
  */
 export function IntroProvider({ children }: { children: ReactNode }) {
   const reduced = usePrefersReducedMotion()
   const [playing, setPlaying] = useState(true)
   const [started, setStarted] = useState(false)
+  const [covering, setCovering] = useState(true)
+  const lastWheel = useRef(0)
   const finish = useCallback(() => setPlaying(false), [])
+
+  // Lock page scrolling while the overlay covers the page (until its dissolve has finished), so
+  // the wheel turn, swipe or key press (Space, Page Down, End…) that skips the intro can't also
+  // scroll the page out from under it. Styles: `html[data-intro]` in `src/styles/index.css`.
+  // Touch moves are cancelled too, so a swipe can't start a fling that outlasts the overlay.
+  useLayoutEffect(() => {
+    if (!covering) return
+    const root = document.documentElement
+    root.dataset.intro = ''
+    const onWheel = () => {
+      lastWheel.current = performance.now()
+    }
+    const onTouchMove = (event: TouchEvent) => {
+      if (event.cancelable) event.preventDefault()
+    }
+    window.addEventListener('wheel', onWheel, { passive: true })
+    window.addEventListener('touchmove', onTouchMove, { passive: false })
+    return () => {
+      delete root.dataset.intro
+      window.removeEventListener('wheel', onWheel)
+      window.removeEventListener('touchmove', onTouchMove)
+    }
+  }, [covering])
+
+  // Once the dissolve has finished, unlock as soon as the wheel is quiet: a trackpad swipe that
+  // skipped the intro keeps sending momentum events for a moment (waits at most 1 s).
+  const uncover = useCallback(() => {
+    const since = performance.now()
+    const settle = () => {
+      const now = performance.now()
+      const quiet = now - lastWheel.current
+      if (quiet >= 200 || now - since >= 1000) setCovering(false)
+      else window.setTimeout(settle, 200 - quiet)
+    }
+    settle()
+  }, [])
 
   // Start the timeline once the first frame (dark overlay + page underneath) has been produced,
   // so a slow first paint can't eat into the animation. Browsers don't run animation frames in
@@ -63,7 +101,7 @@ export function IntroProvider({ children }: { children: ReactNode }) {
   return (
     <IntroRevealContext value={!playing}>
       {children}
-      <AnimatePresence>
+      <AnimatePresence onExitComplete={uncover}>
         {playing && <IntroAnimation key="intro" started={started} reduced={reduced} onSkip={finish} />}
       </AnimatePresence>
     </IntroRevealContext>

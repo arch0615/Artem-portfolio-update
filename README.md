@@ -95,6 +95,11 @@ The subtitle and Skip label are in `introContent` (`src/data/content.ts`); the n
   (deliberately not lengthened with the full intro).
 - **Hand-off:** the hero's entrance animations, and any reveal already on screen (e.g. a case-study
   header), start as the overlay dissolves instead of playing unseen underneath it.
+- **Always opens on Home:** every fresh load or refresh starts at the top of the page. The browser
+  doesn't restore an earlier scroll position, a `#section` in the address (e.g. `/#projects` after
+  using the menu) is dropped instead of jumping there (`src/main.tsx`), and the page can't scroll
+  while the overlay covers it, so the wheel, swipe or key that skips the intro doesn't move it.
+  Menu links, smooth scrolling and back/forward work as usual once the intro has ended.
 - **Performance:** CSS/SVG only, no images or video. Moving effects sit on their own compositor
   layers, and the timeline starts after the first frame is painted (and only once the tab is visible).
 - **Turning it off:** remove `<IntroProvider>` from `src/App.tsx`. Components that call

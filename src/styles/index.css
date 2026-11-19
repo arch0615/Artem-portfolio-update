@@ -91,6 +91,13 @@
     }
   }
 
+  /* The page can't scroll while the intro overlay covers it (IntroProvider). The reserved
+     scrollbar gutter keeps the layout from shifting when the scrollbar comes back. */
+  html[data-intro] {
+    overflow: hidden;
+    scrollbar-gutter: stable;
+  }
+
   body {
     min-height: 100dvh;
     background-color: var(--color-canvas);

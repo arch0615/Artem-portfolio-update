@@ -13,6 +13,9 @@ const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: r
  * - `/#section` scrolls to the section (smoothly when staying on the same page)
  * - a new page without a hash starts at the top
  * Retries for a few frames so lazily rendered routes can mount first.
+ *
+ * A fresh page load always starts at the top: `main.tsx` turns off the browser's own scroll
+ * restoration and drops any `#section` from the address before the app renders.
  */
 export function ScrollManager() {
   const location = useLocation()
@@ -21,7 +24,6 @@ export function ScrollManager() {
 
   // Record the scroll position for the current history entry.
   useEffect(() => {
-    if ('scrollRestoration' in window.history) window.history.scrollRestoration = 'manual'
     let frame = 0
     const onScroll = () => {
       cancelAnimationFrame(frame)

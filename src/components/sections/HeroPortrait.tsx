@@ -14,7 +14,8 @@ const frame = portrait.video ?? portrait
  * Rendered width of the still image: it covers the frame, so it is the frame height (`h-*` classes
  * below) times the image's 2:3 aspect ratio.
  */
-const sizes = '(min-width: 1280px) 24rem, (min-width: 1024px) 22rem, (min-width: 640px) 24rem, 20rem'
+const sizes =
+  '(min-width: 1536px) 26.7rem, (min-width: 1280px) 24rem, (min-width: 1024px) 22rem, (min-width: 640px) 24rem, 20rem'
 
 type ClipStatus = 'waiting' | 'playing' | 'failed'
 
@@ -27,7 +28,7 @@ type ClipStatus = 'waiting' | 'playing' | 'failed'
  * (then only its metadata); it starts once the intro has dissolved and the frame is on screen, and
  * pauses whenever the frame is scrolled out of view.
  */
-export function HeroPortrait() {
+export function HeroPortrait({ className }: { className?: string }) {
   const revealed = useIntroRevealed()
   const reducedMotion = usePrefersReducedMotion()
   const frameRef = useRef<HTMLDivElement>(null)
@@ -70,7 +71,7 @@ export function HeroPortrait() {
       initial={{ opacity: 0, y: 24 }}
       animate={revealed ? { opacity: 1, y: 0 } : undefined}
       transition={{ duration: 0.9, delay: 0.35, ease: easeOutExpo }}
-      className="relative mx-auto w-fit max-w-full"
+      className={cn('relative mx-auto w-fit max-w-full lg:mx-0', className)}
     >
       {/* Blue and violet glow around the frame, echoing the portrait's own lighting */}
       <div aria-hidden className="pointer-events-none absolute -inset-x-16 -inset-y-12 motion-safe:animate-glow">
@@ -80,7 +81,7 @@ export function HeroPortrait() {
 
       <div
         ref={frameRef}
-        className="relative isolate h-[30rem] max-w-full transform-gpu overflow-hidden rounded-[1.75rem] bg-surface card-highlight sm:h-[36rem] lg:h-[33rem] xl:h-[36rem]"
+        className="relative isolate h-[30rem] max-w-full transform-gpu overflow-hidden rounded-[1.75rem] bg-surface card-highlight sm:h-[36rem] lg:h-[33rem] xl:h-[36rem] 2xl:h-[40rem]"
         style={{ aspectRatio: `${frame.width} / ${frame.height}` }}
       >
         <img

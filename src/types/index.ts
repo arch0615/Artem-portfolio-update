@@ -52,13 +52,21 @@ export interface NavItem {
 
 export interface PortraitMedia {
   alt: string
-  /** Intrinsic size of the still image; sets the frame's aspect ratio. */
+  /** Intrinsic size of the still image. */
   width: number
   height: number
-  /** The still image in several widths, smallest first. Shown first, and alone with reduced motion. */
+  /** The still image in several widths, smallest first: placeholder, fallback and reduced-motion view. */
   images: { src: string; width: number }[]
-  /** Optional muted looping clip, in order of preference. Empty means the still image only. */
-  videos: { src: string; type: string }[]
+  /**
+   * Optional muted looping clip, the primary visual when set. The frame takes the clip's aspect
+   * ratio, so the clip is shown whole; the still image is cropped to it (background only).
+   */
+  video?: {
+    width: number
+    height: number
+    /** In order of preference. */
+    sources: { src: string; type: string }[]
+  }
 }
 
 export interface Highlight {

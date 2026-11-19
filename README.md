@@ -102,25 +102,25 @@ The subtitle and Skip label are in `introContent` (`src/data/content.ts`); the n
 
 ### Hero portrait
 
-The right side of the hero shows a full-length portrait (`HeroPortrait.tsx`, configured by
-`portrait` in `src/data/profile.ts`). The photo is served from `public/images/` as WebP in three
-widths (480, 768 and 1024 px, 17–63 KB), and the browser picks the right one for the screen.
+The right side of the hero shows an animated full-length portrait (`HeroPortrait.tsx`, configured
+by `portrait` in `src/data/profile.ts`):
 
-**Adding the animated version.** The site doesn't generate video: create the clip from the original
-photo with an image-to-video tool (e.g. Kling, Runway, Google Veo or Luma), then:
+- **Clip:** `public/videos/portrait.mp4`, a muted 5 s loop (720×1280, H.264) made from the portrait
+  photo with an image-to-video tool. The frame takes the clip's aspect ratio, so the clip is always
+  shown whole, head to feet, never cropped or stretched.
+- **Still image:** the photo as WebP in three widths (480, 768 and 1024 px, 17–63 KB) in
+  `public/images/`, cropped to the frame at the background edges only. It shows until the clip
+  plays, and on its own for visitors who prefer reduced motion, if the clip fails to load or if the
+  browser refuses autoplay.
 
-1. Export a seamless 5–7 s loop without audio, ideally in the photo's 2:3 aspect (9:16 also works),
-   about 720 px wide, as MP4 (H.264), ideally under 3 MB.
-2. Save it as `public/videos/portrait.mp4`.
-3. In `profile.ts`, set `videos: [{ src: '/videos/portrait.mp4', type: 'video/mp4' }]`.
+Playback: nothing of the clip is downloaded until the portrait is close to the screen, and then only
+its metadata. It starts once the intro has dissolved, loops silently without controls, pauses when
+the portrait is scrolled out of view and resumes when it's back.
 
-The photo shows first. The clip fades in over it once the intro has dissolved, loops silently,
-pauses while scrolled off screen and is never loaded for visitors who prefer reduced motion (they
-keep the photo). The clip is never cropped, so head to feet always stay visible; if its aspect
-differs from the photo's, the photo fills the uncovered edges.
-
-To replace the photo, export new `portrait-480/768/1024.webp` files under the same names and update
-`width`/`height` if the aspect ratio changes.
+To replace the clip, export a seamless loop as MP4 (H.264), ideally under 3 MB, then save it under
+the same name (or update `video.sources`) and set `video.width`/`video.height` to its dimensions.
+Remove `video` to show the still image only. To replace the photo, export new
+`portrait-480/768/1024.webp` files under the same names and update `width`/`height`.
 
 ### Project visuals
 
@@ -164,7 +164,7 @@ assets and baseline security headers.
 ```
 config/                   Build plugins: SEO/sitemap/robots, font preload
 public/                   favicon.ico/.svg, touch & PWA icons, og-image.png, site.webmanifest,
-                          images/portrait-*.webp (hero portrait)
+                          images/portrait-*.webp and videos/portrait.mp4 (hero portrait)
 src/
   components/
     intro/                Full-screen intro (provider, overlay, timeline, ribbon geometry, styles)

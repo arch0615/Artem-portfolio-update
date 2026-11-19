@@ -40,7 +40,7 @@ All copy and project data live in typed files under `src/data/` — components c
 
 | File | Contents |
 | --- | --- |
-| `profile.ts` | Name, titles, hero portrait, site URL and SEO defaults |
+| `profile.ts` | Name, titles, brand icon, hero portrait, site URL and SEO defaults |
 | `content.ts` | Section copy: hero, about, experience, process, footer, intro |
 | `projects.ts` | Project cards (featured projects get a case study) and the `showProjectLinks` switch |
 | `case-studies.ts` | Case-study narrative, architecture layers, decisions, results |

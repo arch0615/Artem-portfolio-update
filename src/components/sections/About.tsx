@@ -2,7 +2,7 @@ import { aboutContent } from '@/data/content'
 import { profile } from '@/data/profile'
 import { icons } from '@/lib/icons'
 import { Container } from '@/components/layout/Container'
-import { Monogram } from '@/components/layout/Logo'
+import { BrandMark } from '@/components/layout/Logo'
 import { AnimatedSection, Reveal, Stagger, StaggerItem } from '@/components/ui/AnimatedSection'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { SpotlightCard } from '@/components/ui/SpotlightCard'
@@ -30,7 +30,7 @@ export function About() {
                 “{aboutContent.belief}”
               </blockquote>
               <figcaption className="mt-4 flex items-center gap-3 text-sm text-fg-muted">
-                <Monogram className="size-7 [&>span]:text-[0.6rem]" />
+                <BrandMark className="size-7" />
                 {profile.name}
               </figcaption>
             </figure>
@@ -42,7 +42,7 @@ export function About() {
             <div className="relative border-b border-line p-6 sm:p-7">
               <div aria-hidden className="bg-dots absolute inset-0 mask-radial-center opacity-60" />
               <div className="relative flex items-center gap-4">
-                <Monogram className="size-14 rounded-2xl [&>span]:rounded-[15px] [&>span]:text-base" />
+                <BrandMark className="size-14 rounded-2xl [&>span]:rounded-[15px]" />
                 <div>
                   <p className="text-lg font-semibold tracking-tight text-fg">{profile.name}</p>
                   <p className="text-sm text-fg-muted">{profile.headline}</p>

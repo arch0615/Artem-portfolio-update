@@ -10,7 +10,8 @@ import type { Highlight, PortraitMedia } from '../types'
 export const profile = {
   name: 'Artem Bohomolov',
   firstName: 'Artem',
-  initials: 'AB',
+  /** Brand icon shown in the logo mark (navbar, footer, About). */
+  brandIcon: '/images/icon.jpeg',
   title: 'AI Full-Stack Developer',
   tagline: 'Mobile Apps & Automation',
   headline: 'AI Full-Stack Developer | Mobile Apps & Automation',

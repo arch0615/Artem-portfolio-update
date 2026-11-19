@@ -4,7 +4,7 @@ import { navigation } from '@/data/navigation'
 import { profile } from '@/data/profile'
 import { footerContent } from '@/data/content'
 import { Container } from './Container'
-import { Monogram } from './Logo'
+import { BrandMark } from './Logo'
 
 /** Footer navigation: every section except "Home" (the logo already links there). */
 const footerLinks = navigation.filter((item) => item.id !== 'home')
@@ -22,7 +22,7 @@ export function Footer() {
         <div className="grid grid-cols-1 gap-12 md:grid-cols-[1.4fr_1fr]">
           <div>
             <Link to="/#home" className="inline-flex items-center gap-3 rounded-lg">
-              <Monogram className="size-10 rounded-xl [&>span]:rounded-[11px] [&>span]:text-xs" />
+              <BrandMark className="size-10 rounded-xl [&>span]:rounded-[11px]" />
               <span>
                 <span className="block font-semibold tracking-tight text-fg">{profile.name}</span>
                 <span className="block text-sm text-fg-muted">{profile.title}</span>

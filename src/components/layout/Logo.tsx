@@ -2,7 +2,12 @@ import { Link } from 'react-router'
 import { profile } from '@/data/profile'
 import { cn } from '@/lib/cn'
 
-export function Monogram({ className }: { className?: string }) {
+/**
+ * Brand mark: the brand icon inside the gradient-bordered rounded square. The icon's own near-black
+ * background matches the dark tile, so it needs no cut-out; the padding keeps the whole emblem clear
+ * of the rounded corners.
+ */
+export function BrandMark({ className }: { className?: string }) {
   return (
     <span
       aria-hidden
@@ -11,8 +16,16 @@ export function Monogram({ className }: { className?: string }) {
         className,
       )}
     >
-      <span className="grid size-full place-items-center rounded-[9px] bg-canvas font-mono text-[0.68rem] font-semibold tracking-tight text-fg">
-        {profile.initials}
+      <span className="grid size-full place-items-center overflow-hidden rounded-[9px] bg-canvas">
+        <img
+          src={profile.brandIcon}
+          alt=""
+          width={2048}
+          height={2048}
+          decoding="async"
+          draggable={false}
+          className="size-full object-contain p-[8%]"
+        />
       </span>
     </span>
   )
@@ -31,7 +44,7 @@ export function Logo({ className, onNavigate }: LogoProps) {
       className={cn('group flex items-center gap-2.5 rounded-lg', className)}
       aria-label={`${profile.name} — home`}
     >
-      <Monogram className="transition-transform duration-300 group-hover:scale-105" />
+      <BrandMark className="transition-transform duration-300 group-hover:scale-105" />
       <span className="text-[0.95rem] font-semibold tracking-tight text-fg">{profile.name}</span>
     </Link>
   )

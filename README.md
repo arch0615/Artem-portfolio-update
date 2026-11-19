@@ -127,6 +127,27 @@ the same name (or update `video.sources`) and set `video.width`/`video.height` t
 Remove `video` to show the still image only. To replace the photo, export new
 `portrait-480/768/1024.webp` files under the same names and update `width`/`height`.
 
+### Hero background (glass fragments)
+
+Behind the hero content, a few nearly transparent glass cubes float freely in 3D space
+(`HeroFragments.tsx`; motion and drawing in `glass-fragments.ts`):
+
+- **Look:** faces are 3–8 % opaque glass, shaded by angle, with hair-thin blue/violet edges that
+  brighten where they catch the light (from the upper left) and a very faint glow behind each cube.
+  They sit in the hero background, behind the text, buttons, portrait and navbar, and never take
+  clicks or taps.
+- **Movement:** every cube has its own size, depth, drift speed and slowly turning heading,
+  wandering path, tumble axis and spin speed. Some cross the screen, some drift diagonally, some move
+  toward and away from the camera; a cube that leaves one edge returns at the other once out of view.
+- **Performance:** 12 cubes on desktop, 8 on tablets, 5 on phones. Each cube has its own small
+  canvas that the compositor moves; it's repainted only when its outline visibly changes, and its
+  glow is a CSS gradient. Nothing runs before the intro dissolves or while the hero is off screen, and
+  devices that can't keep up drop to about 30 fps. Visitors who prefer reduced motion see a still frame.
+
+To tune it: the number of cubes per screen size is `fragmentCount`, the colours are `BLUE` and
+`VIOLET`, and face and edge opacity are set in `draw()`. To turn it off, remove `<HeroFragments />`
+from `HeroBackground` in `Hero.tsx`.
+
 ### Project visuals
 
 Each project uses an original, resolution-independent CSS mockup (`src/components/visuals/`),
@@ -152,8 +173,8 @@ image in `public/images/projects/` and render it in `ProjectCard` in place of `P
 - Case-study pages and brand-icon data load lazily.
 - The Latin Geist font file is preloaded; other subsets load only when needed.
 - Animations are transform/opacity only, play once on reveal, and are disabled for users who prefer
-  reduced motion. The architecture graph's data "packets" and the portrait clip only run while on
-  screen.
+  reduced motion. The architecture graph's data "packets", the portrait clip and the hero's glass
+  fragments only run while on screen.
 
 ## Deployment (Vercel)
 
@@ -174,7 +195,7 @@ src/
   components/
     intro/                Full-screen intro (provider, overlay, timeline, ribbon geometry, styles)
     layout/               Navbar, Footer, Container, Logo, ScrollManager
-    sections/             Hero (+ HeroPortrait), TechHighlights, About, Expertise (+ interactive
+    sections/             Hero (+ HeroPortrait, HeroFragments), TechHighlights, About, Expertise (+ interactive
                           ProductArchitecture graph), Projects, Services, Experience, Process
     ui/                   Button, SectionHeading, AnimatedSection, ProjectCard, SkillCard,
                           ServiceCard, SpotlightCard, TechChip, IconBadge, BrandIcon

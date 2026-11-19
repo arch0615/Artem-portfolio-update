@@ -43,6 +43,7 @@ All copy and project data live in typed files under `src/data/` — components c
 | `profile.ts` | Name, titles, brand icon, hero portrait, site URL and SEO defaults |
 | `content.ts` | Section copy: hero, about, experience, process, footer, intro |
 | `projects.ts` | Project cards (featured projects get a case study) and the `showProjectLinks` switch |
+| `showcase.ts` | Selected work showcase (Expertise section): projects, key functionality, screenshots |
 | `case-studies.ts` | Case-study narrative, architecture layers, decisions, results |
 | `skills.ts` | Expertise categories and the core-technology strip |
 | `services.ts` | Service cards |
@@ -163,6 +164,24 @@ To tune it: colours and nebulae are at the top of `space.css`; the number of cub
 (`glass-fragments.ts`), and the scroll effect `PARALLAX` (`GlassFragments.tsx`). To turn the whole
 background off, remove `<GlobalSpaceBackground />` from `App.tsx`.
 
+### Selected work showcase (Expertise section)
+
+The Expertise section opens with real projects shown through their real application screens
+(`WorkShowcase.tsx`, configured in `src/data/showcase.ts`): project tabs; the project's category,
+description, three or four key functionalities (taken from its recorded features) and case-study
+link on the left (above, on small screens); its screens on the right in phone or browser frames,
+with buttons to switch between them. The technology cards follow below.
+
+**Screenshots:** save each real screenshot in `src/assets/work/` under the file name configured for
+its screen; it appears automatically, and the build fingerprints it for caching. Until a file
+exists, its frame shows a "Screenshot coming soon" placeholder. The list of expected files and
+recommended sizes is in `src/assets/work/README.md`. The whole screenshot is always shown, never
+cropped or stretched. Only real application screens belong there: no mockups or generated images,
+and nothing that shows contact details or customer data.
+
+To add a project (e.g. an AI or automation project), add an entry to `showcase.ts` with its
+`slug` from `projects.ts`, a description, its key features and its screens.
+
 ### Project visuals
 
 Each project uses an original, resolution-independent CSS mockup (`src/components/visuals/`),
@@ -188,8 +207,9 @@ image in `public/images/projects/` and render it in `ProjectCard` in place of `P
 - Case-study pages and brand-icon data load lazily.
 - The Latin Geist font file is preloaded; other subsets load only when needed.
 - Animations are transform/opacity only, play once on reveal, and are disabled for users who prefer
-  reduced motion. The architecture graph's data "packets" and the portrait clip only run while on
-  screen; the global background is built to stay cheap (see "Global space background").
+  reduced motion. The portrait clip only runs while on screen; the global background is built to
+  stay cheap (see "Global space background"). Showcase screenshots load lazily, and a project's
+  other screens are fetched once the showcase is near, so switching is instant.
 
 ## Deployment (Vercel)
 
@@ -207,12 +227,13 @@ config/                   Build plugins: SEO/sitemap/robots, font preload
 public/                   favicon.ico/.svg, touch & PWA icons, og-image.png, site.webmanifest,
                           images/portrait-*.webp and videos/portrait.mp4 (hero portrait)
 src/
+  assets/work/            Real screenshots for the Selected work showcase (see its README)
   components/
     background/           Global space background (nebulae, stars, light waves, glass fragments)
     intro/                Full-screen intro (provider, overlay, timeline, ribbon geometry, styles)
     layout/               Navbar, Footer, Container, Logo, ScrollManager
-    sections/             Hero (+ HeroPortrait), TechHighlights, About, Expertise (+ interactive
-                          ProductArchitecture graph), Projects, Services, Experience, Process
+    sections/             Hero (+ HeroPortrait), TechHighlights, About, Expertise (+ WorkShowcase),
+                          Projects, Services, Experience, Process
     ui/                   Button, SectionHeading, AnimatedSection, ProjectCard, SkillCard,
                           ServiceCard, SpotlightCard, TechChip, IconBadge, BrandIcon
     visuals/              Original CSS product mockups for each project

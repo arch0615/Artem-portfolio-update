@@ -35,10 +35,21 @@ export const aboutContent = {
 } as const
 
 export const expertiseContent = {
-  eyebrow: 'Expertise',
-  title: 'Technical Depth Across the Entire Product Stack.',
+  eyebrow: 'Selected Work',
+  title: 'Real Products. Practical Solutions.',
   description:
-    'From language models and APIs to mobile apps, data and infrastructure — the tools I use to design, build and ship complete products.',
+    'A closer look at the applications, platforms, and intelligent systems I have designed and developed.',
+  /** Label above the technology cards below the showcase. */
+  skillsLabel: 'Technical expertise',
+}
+
+/** Labels in the Selected work showcase (projects and screens: `src/data/showcase.ts`). */
+export const showcaseContent = {
+  projectsLabel: 'Projects',
+  featuresLabel: 'Key functionality',
+  screensLabel: 'Screens',
+  caseStudy: 'Read case study',
+  placeholder: 'Screenshot coming soon',
 }
 
 export const projectsContent = {

@@ -179,3 +179,24 @@ export interface CaseStudy {
     points: string[]
   }
 }
+
+/** One real application screen in the Selected work showcase (see `src/data/showcase.ts`). */
+export interface ShowcaseScreen {
+  /** File name without extension in `src/assets/work/` (.webp, .png, .jpg or .avif). */
+  file: string
+  /** Short label for the screen selector, e.g. "Map". */
+  label: string
+  /** What the screenshot shows, for screen readers. */
+  alt: string
+  /** Frame: `phone` for a portrait app screen, `browser` for a web interface. */
+  device: 'phone' | 'browser'
+}
+
+export interface ShowcaseProject {
+  /** Project in `projects.ts`: name, category, accent and case-study link come from there. */
+  slug: string
+  description: string
+  /** Three or four key functionalities, taken from the project's recorded features. */
+  features: string[]
+  screens: ShowcaseScreen[]
+}

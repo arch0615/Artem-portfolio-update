@@ -43,9 +43,9 @@ All copy and project data live in typed files under `src/data/` — components c
 | `profile.ts` | Name, titles, brand icon, hero portrait, site URL and SEO defaults |
 | `content.ts` | Section copy: hero, about, experience, process, footer, intro |
 | `projects.ts` | Project cards (featured projects get a case study) and the `showProjectLinks` switch |
-| `showcase.ts` | Selected work showcase (Expertise section): projects, key functionality, screenshots |
+| `project-screens.ts` | Real application screens per project, shown in the Skills section |
 | `case-studies.ts` | Case-study narrative, architecture layers, decisions, results |
-| `skills.ts` | Expertise categories and the core-technology strip |
+| `skills.ts` | Skill areas for the Skills section (technologies, project examples) and the core-technology strip |
 | `services.ts` | Service cards |
 | `navigation.ts` | Navbar items (ids must match section ids) |
 
@@ -164,13 +164,15 @@ To tune it: colours and nebulae are at the top of `space.css`; the number of cub
 (`glass-fragments.ts`), and the scroll effect `PARALLAX` (`GlassFragments.tsx`). To turn the whole
 background off, remove `<GlobalSpaceBackground />` from `App.tsx`.
 
-### Selected work showcase (Expertise section)
+### Skills section
 
-The Expertise section opens with real projects shown through their real application screens
-(`WorkShowcase.tsx`, configured in `src/data/showcase.ts`): project tabs; the project's category,
-description, three or four key functionalities (taken from its recorded features) and case-study
-link on the left (above, on small screens); its screens on the right in phone or browser frames,
-with buttons to switch between them. The technology cards follow below.
+The Skills section (`#skills`, `Skills.tsx` + `SkillsShowcase.tsx`) shows what Artem can build
+through real work: six skill areas (full-stack, mobile, AI & agents, business process automation,
+backend & APIs, cloud & DevOps). Picking one shows its technologies and the real projects that
+demonstrate it, each with a short note based on the project's recorded facts and the technologies
+it used, plus the selected project's real screens in phone or browser frames (`ScreenViewer.tsx`).
+Skill areas and their examples live in `src/data/skills.ts`; screens per project in
+`src/data/project-screens.ts`.
 
 **Screenshots:** save each real screenshot in `src/assets/work/` under the file name configured for
 its screen; it appears automatically, and the build fingerprints it for caching. Until a file
@@ -178,9 +180,6 @@ exists, its frame shows a "Screenshot coming soon" placeholder. The list of expe
 recommended sizes is in `src/assets/work/README.md`. The whole screenshot is always shown, never
 cropped or stretched. Only real application screens belong there: no mockups or generated images,
 and nothing that shows contact details or customer data.
-
-To add a project (e.g. an AI or automation project), add an entry to `showcase.ts` with its
-`slug` from `projects.ts`, a description, its key features and its screens.
 
 ### Project visuals
 
@@ -208,8 +207,9 @@ image in `public/images/projects/` and render it in `ProjectCard` in place of `P
 - The Latin Geist font file is preloaded; other subsets load only when needed.
 - Animations are transform/opacity only, play once on reveal, and are disabled for users who prefer
   reduced motion. The portrait clip only runs while on screen; the global background is built to
-  stay cheap (see "Global space background"). Showcase screenshots load lazily, and a project's
-  other screens are fetched once the showcase is near, so switching is instant.
+  stay cheap (see "Global space background"). Project screenshots in the Skills section load
+  lazily, and a project's other screens are fetched once its viewer is near, so switching is
+  instant.
 
 ## Deployment (Vercel)
 
@@ -232,9 +232,9 @@ src/
     background/           Global space background (nebulae, stars, light waves, glass fragments)
     intro/                Full-screen intro (provider, overlay, timeline, ribbon geometry, styles)
     layout/               Navbar, Footer, Container, Logo, ScrollManager
-    sections/             Hero (+ HeroPortrait), TechHighlights, About, Expertise (+ WorkShowcase),
+    sections/             Hero (+ HeroPortrait), TechHighlights, About, Skills (+ SkillsShowcase),
                           Projects, Services, Experience, Process
-    ui/                   Button, SectionHeading, AnimatedSection, ProjectCard, SkillCard,
+    ui/                   Button, SectionHeading, AnimatedSection, ProjectCard, ScreenViewer,
                           ServiceCard, SpotlightCard, TechChip, IconBadge, BrandIcon
     visuals/              Original CSS product mockups for each project
     case-study/           ArchitectureDiagram

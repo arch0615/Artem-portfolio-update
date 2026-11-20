@@ -80,6 +80,19 @@ export interface SkillCategory {
   description: string
   icon: IconName
   skills: string[]
+  /** Real projects that demonstrate this skill area, shown with their screens. */
+  examples: SkillExample[]
+}
+
+export interface SkillExample {
+  /** Project slug in `projects.ts`. */
+  project: string
+  /** How the project demonstrates the skill, based only on its recorded facts. */
+  note: string
+  /** Technologies to show: a subset of the project's own (defaults to all of them). */
+  technologies?: string[]
+  /** Screens to show, by file name (defaults to all of the project's screens). */
+  screens?: string[]
 }
 
 export interface Service {
@@ -180,8 +193,8 @@ export interface CaseStudy {
   }
 }
 
-/** One real application screen in the Selected work showcase (see `src/data/showcase.ts`). */
-export interface ShowcaseScreen {
+/** One real application screen (see `src/data/project-screens.ts`). */
+export interface ProjectScreen {
   /** File name without extension in `src/assets/work/` (.webp, .png, .jpg or .avif). */
   file: string
   /** Short label for the screen selector, e.g. "Map". */
@@ -190,13 +203,4 @@ export interface ShowcaseScreen {
   alt: string
   /** Frame: `phone` for a portrait app screen, `browser` for a web interface. */
   device: 'phone' | 'browser'
-}
-
-export interface ShowcaseProject {
-  /** Project in `projects.ts`: name, category, accent and case-study link come from there. */
-  slug: string
-  description: string
-  /** Three or four key functionalities, taken from the project's recorded features. */
-  features: string[]
-  screens: ShowcaseScreen[]
 }

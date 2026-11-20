@@ -10,7 +10,7 @@ export const heroContent = {
     'I turn complex ideas into scalable digital products that solve real business problems.',
   ],
   primaryCta: { label: 'Explore My Projects', id: 'projects' },
-  secondaryCta: { label: 'View My Expertise', id: 'expertise' },
+  secondaryCta: { label: 'View My Skills', id: 'skills' },
 }
 
 export const aboutContent = {
@@ -34,21 +34,26 @@ export const aboutContent = {
   ],
 } as const
 
-export const expertiseContent = {
-  eyebrow: 'Selected Work',
-  title: 'Real Products. Practical Solutions.',
+export const skillsContent = {
+  eyebrow: 'My Skills',
+  title: 'Skills That Build Real Products.',
   description:
-    'A closer look at the applications, platforms, and intelligent systems I have designed and developed.',
-  /** Label above the technology cards below the showcase. */
-  skillsLabel: 'Technical expertise',
+    'From full-stack engineering and mobile development to AI integration and intelligent automation, I turn complex ideas into practical digital solutions.',
 }
 
-/** Labels in the Selected work showcase (projects and screens: `src/data/showcase.ts`). */
-export const showcaseContent = {
-  projectsLabel: 'Projects',
-  featuresLabel: 'Key functionality',
+/** Labels in the Skills section (skill areas: `src/data/skills.ts`). */
+export const skillsShowcaseContent = {
+  areasLabel: 'Skill areas',
+  technologiesLabel: 'Technologies',
+  exampleLabel: 'Project example',
+  examplesLabel: 'Project examples',
+  /** Follows the project name: "Radar App case study". */
+  caseStudy: 'case study',
+}
+
+/** Labels in the screenshot viewer (screens: `src/data/project-screens.ts`). */
+export const screenViewerContent = {
   screensLabel: 'Screens',
-  caseStudy: 'Read case study',
   placeholder: 'Screenshot coming soon',
 }
 

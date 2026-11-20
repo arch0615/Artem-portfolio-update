@@ -1,6 +1,6 @@
 /**
- * Real application screenshots for the Selected work showcase, found at build time in
- * `src/assets/work/` (configured in `src/data/showcase.ts`). The build fingerprints them, so they
+ * Real application screenshots for the Skills section, found at build time in
+ * `src/assets/work/` (configured in `src/data/project-screens.ts`). The build fingerprints them, so they
  * are cached long-term; a screen without a file simply has no URL.
  */
 const files = import.meta.glob<string>('/src/assets/work/*.{webp,png,jpg,jpeg,avif}', {

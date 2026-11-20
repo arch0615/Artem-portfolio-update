@@ -42,7 +42,7 @@ All copy and project data live in typed files under `src/data/` — components c
 | File | Contents |
 | --- | --- |
 | `profile.ts` | Name, titles, brand icon, hero portrait, site URL and SEO defaults |
-| `content.ts` | Section copy: hero, about, experience heading, process, footer, intro |
+| `content.ts` | Section copy: hero, about, experience heading, footer, intro |
 | `projects.ts` | Project cards (featured projects get a case study) and the `showProjectLinks` switch |
 | `case-studies.ts` | Case-study narrative, architecture layers, decisions, results |
 | `skills.ts` | Skill categories and their technologies (icon, brand colour) and the core-technology strip |
@@ -251,7 +251,7 @@ src/
     intro/                Full-screen intro (provider, overlay, timeline, ribbon geometry, styles)
     layout/               Navbar, Footer, Container, Logo, ScrollManager
     sections/             Hero (+ HeroPortrait), TechHighlights, About, Skills,
-                          Projects, Services, Experience, Process
+                          Projects, Services, Experience
     skills/               SkillCategorySelector, SkillGrid, SkillCard, TechIcon
     experience/           ExperienceEntry (one position in the timeline)
     ui/                   Button, SectionHeading, AnimatedSection, ProjectCard,

@@ -1,5 +1,3 @@
-import type { ProcessStep } from '../types'
-
 /** Section copy for the home page. Edit text here, not in components. */
 
 export const heroContent = {
@@ -72,40 +70,6 @@ export const experienceContent = {
   /** End of a current role's period: "Nov 2020 – Present". */
   present: 'Present',
 }
-
-export const processContent = {
-  eyebrow: 'Process',
-  title: 'From Business Idea to Production.',
-  description: 'A clear, four-stage process that keeps scope, architecture and delivery aligned with your goals.',
-}
-
-export const processSteps: ProcessStep[] = [
-  {
-    step: '01',
-    title: 'Discovery',
-    description: 'Understand business requirements, user needs, technical challenges, and objectives.',
-    icon: 'search',
-  },
-  {
-    step: '02',
-    title: 'Architecture',
-    description: 'Design the system architecture, database, APIs, technology stack, and implementation strategy.',
-    icon: 'compass',
-  },
-  {
-    step: '03',
-    title: 'Development',
-    description:
-      'Build the frontend, backend, mobile applications, AI integrations, automation workflows, and tests.',
-    icon: 'code',
-  },
-  {
-    step: '04',
-    title: 'Delivery',
-    description: 'Deploy, validate, optimize, document, and deliver the completed solution.',
-    icon: 'rocket',
-  },
-]
 
 export const footerContent = {
   tagline: 'Mobile Apps | AI Integration | Automation',

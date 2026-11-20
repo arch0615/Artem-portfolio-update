@@ -17,7 +17,6 @@ export type IconName =
   | 'camera'
   | 'cloud'
   | 'code'
-  | 'compass'
   | 'copy'
   | 'database'
   | 'fileSearch'
@@ -37,9 +36,7 @@ export type IconName =
   | 'pause'
   | 'plug'
   | 'repeat'
-  | 'rocket'
   | 'scanEye'
-  | 'search'
   | 'server'
   | 'shield'
   | 'smartphone'
@@ -134,13 +131,6 @@ export interface Position {
   /** Key responsibilities and achievements. */
   highlights: string[]
   technologies: string[]
-}
-
-export interface ProcessStep {
-  step: string
-  title: string
-  description: string
-  icon: IconName
 }
 
 /** Original CSS-based product mockups in `src/components/visuals`. */

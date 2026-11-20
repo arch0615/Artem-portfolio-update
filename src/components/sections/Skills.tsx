@@ -29,10 +29,9 @@ export function Skills() {
           eyebrow={skillsContent.eyebrow}
           title={skillsContent.title}
           description={skillsContent.description}
-          // Desktop: the description runs on one line. From 1280px its size eases down just enough to fit
+          // Desktop: the description runs on one line too. From 1280px its size eases down just enough to fit
           // the narrower desktops; between 1024 and 1280px it splits into two even lines.
-          className="lg:max-w-none"
-          descriptionClassName="lg:text-balance xl:text-[length:min(1.125rem,calc((100vw_-_6rem)/70))]"
+          descriptionClassName="lg:max-w-none lg:text-balance xl:text-[length:min(1.125rem,calc((100vw_-_6rem)/70))]"
         />
         <div className="mt-10 grid grid-cols-1 gap-6 sm:mt-12 sm:gap-8 lg:mt-14 lg:grid-cols-[minmax(0,3fr)_minmax(0,7fr)] lg:items-start lg:gap-10 xl:gap-12">
           <Reveal>

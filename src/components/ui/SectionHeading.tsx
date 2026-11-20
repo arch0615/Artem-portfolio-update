@@ -9,9 +9,19 @@ interface SectionHeadingProps {
   description?: ReactNode
   align?: 'left' | 'center'
   className?: string
+  /** Extra classes for the description paragraph. */
+  descriptionClassName?: string
 }
 
-export function SectionHeading({ id, eyebrow, title, description, align = 'left', className }: SectionHeadingProps) {
+export function SectionHeading({
+  id,
+  eyebrow,
+  title,
+  description,
+  align = 'left',
+  className,
+  descriptionClassName,
+}: SectionHeadingProps) {
   const centered = align === 'center'
   return (
     <Reveal className={cn('max-w-3xl', centered && 'mx-auto text-center', className)}>
@@ -23,7 +33,7 @@ export function SectionHeading({ id, eyebrow, title, description, align = 'left'
         {title}
       </h2>
       {description && (
-        <p className="mt-5 text-base leading-relaxed text-fg-muted sm:text-lg">{description}</p>
+        <p className={cn('mt-5 text-base leading-relaxed text-fg-muted sm:text-lg', descriptionClassName)}>{description}</p>
       )}
     </Reveal>
   )

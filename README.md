@@ -13,7 +13,7 @@ A single-page site with dedicated case-study pages, built as a fast, accessible,
 | Styling | Tailwind CSS 4 (CSS-first tokens in `src/styles/index.css`) |
 | Animation | Framer Motion (`LazyMotion` + `m`, respects *reduce motion*) |
 | Routing | React Router 8 (case studies are lazy-loaded routes) |
-| Icons | Lucide React; brand glyphs from Simple Icons (CC0), lazy-loaded |
+| Icons | Lucide React; brand glyphs from Simple Icons and Skills logos from Simple Icons, SVG Logos and LobeHub (generated, lazy-loaded) |
 | Fonts | Geist / Geist Mono, self-hosted via Fontsource |
 
 ## Getting started
@@ -33,6 +33,7 @@ npm run dev        # http://localhost:5173
 | `npm run typecheck` | TypeScript only. |
 | `npm run lint` | ESLint (incl. React Compiler-aware hooks rules). |
 | `npm run check` | Typecheck + lint + build — run before deploying. |
+| `npm run logos` | Regenerates the Skills section's technology logos (`src/lib/tech-logos.ts`). |
 
 ## Editing content
 
@@ -43,9 +44,8 @@ All copy and project data live in typed files under `src/data/` — components c
 | `profile.ts` | Name, titles, brand icon, hero portrait, site URL and SEO defaults |
 | `content.ts` | Section copy: hero, about, experience, process, footer, intro |
 | `projects.ts` | Project cards (featured projects get a case study) and the `showProjectLinks` switch |
-| `project-screens.ts` | Real application screens per project, shown in the Skills section |
 | `case-studies.ts` | Case-study narrative, architecture layers, decisions, results |
-| `skills.ts` | Skill areas for the Skills section (technologies, project examples) and the core-technology strip |
+| `skills.ts` | Skill categories and their technologies (icon, brand colour) and the core-technology strip |
 | `services.ts` | Service cards |
 | `navigation.ts` | Navbar items (ids must match section ids) |
 
@@ -166,20 +166,28 @@ background off, remove `<GlobalSpaceBackground />` from `App.tsx`.
 
 ### Skills section
 
-The Skills section (`#skills`, `Skills.tsx` + `SkillsShowcase.tsx`) shows what Artem can build
-through real work: six skill areas (full-stack, mobile, AI & agents, business process automation,
-backend & APIs, cloud & DevOps). Picking one shows its technologies and the real projects that
-demonstrate it, each with a short note based on the project's recorded facts and the technologies
-it used, plus the selected project's real screens in phone or browser frames (`ScreenViewer.tsx`).
-Skill areas and their examples live in `src/data/skills.ts`; screens per project in
-`src/data/project-screens.ts`.
+The Skills section (`#skills`, `Skills.tsx` + `src/components/skills/`) shows technologies only:
+six categories (full-stack, mobile, AI & intelligent agents, automation & integrations, backend &
+databases, cloud & DevOps) as tabs on the left — a horizontally scrolling row above the cards on
+smaller screens — and the selected category's technologies as cards on the right, each with its
+official logo in its brand colours. Selecting a category fades the previous cards out and cascades
+the new ones in (a single short fade for visitors who prefer reduced motion). The grid keeps the
+height of the largest category, so switching never moves the page.
 
-**Screenshots:** save each real screenshot in `src/assets/work/` under the file name configured for
-its screen; it appears automatically, and the build fingerprints it for caching. Until a file
-exists, its frame shows a "Screenshot coming soon" placeholder. The list of expected files and
-recommended sizes is in `src/assets/work/README.md`. The whole screenshot is always shown, never
-cropped or stretched. Only real application screens belong there: no mockups or generated images,
-and nothing that shows contact details or customer data.
+Everything is data in `src/data/skills.ts`: each technology has a name and an icon, which is one of
+
+- `mono('react', '#61DAFB')` — a single-colour official mark filled with its brand colour (white for
+  marks that are black, e.g. Next.js, Vercel, Prisma);
+- `multicolor('python', '#3776AB')` — the official multicolour logo, drawn in its own colours (the
+  colour is the brand's primary colour, used for a faint halo on hover);
+- `generic('webhook')` — a Lucide icon in the accent colour, for capabilities without an official
+  logo (and for PostGIS, pgvector, CLIP, which have none in the icon libraries).
+
+**Logos** are generated, not hand-drawn: `scripts/generate-tech-logos.mjs` copies exactly the logos
+listed in its `LOGOS` map from pinned versions of Simple Icons, the Iconify "logos" set and LobeHub
+icons into `src/lib/tech-logos.ts`, which the site loads lazily in its own small chunk (no icon
+library in the bundle, nothing fetched from a CDN). To add a technology with a new logo: add it to
+`LOGOS`, run `npm run logos`, then add the technology to `skills.ts`.
 
 ### Project visuals
 
@@ -203,13 +211,12 @@ image in `public/images/projects/` and render it in `ProjectCard` in place of `P
 ## Performance
 
 - Vendor code is split into long-cacheable chunks (`react`, `router`, `motion`).
-- Case-study pages and brand-icon data load lazily.
+- Case-study pages, brand-icon data and the Skills logos load lazily.
 - The Latin Geist font file is preloaded; other subsets load only when needed.
 - Animations are transform/opacity only, play once on reveal, and are disabled for users who prefer
   reduced motion. The portrait clip only runs while on screen; the global background is built to
-  stay cheap (see "Global space background"). Project screenshots in the Skills section load
-  lazily, and a project's other screens are fetched once its viewer is near, so switching is
-  instant.
+  stay cheap (see "Global space background"). The Skills logos (~25 KB gzipped) load in their
+  own chunk after the page renders; the cards cascade in once they are there.
 
 ## Deployment (Vercel)
 
@@ -224,17 +231,18 @@ assets and baseline security headers.
 
 ```
 config/                   Build plugins: SEO/sitemap/robots, font preload
+scripts/                  generate-tech-logos.mjs (Skills logos)
 public/                   favicon.ico/.svg, touch & PWA icons, og-image.png, site.webmanifest,
                           images/portrait-*.webp and videos/portrait.mp4 (hero portrait)
 src/
-  assets/work/            Real screenshots for the Selected work showcase (see its README)
   components/
     background/           Global space background (nebulae, stars, light waves, glass fragments)
     intro/                Full-screen intro (provider, overlay, timeline, ribbon geometry, styles)
     layout/               Navbar, Footer, Container, Logo, ScrollManager
-    sections/             Hero (+ HeroPortrait), TechHighlights, About, Skills (+ SkillsShowcase),
+    sections/             Hero (+ HeroPortrait), TechHighlights, About, Skills,
                           Projects, Services, Experience, Process
-    ui/                   Button, SectionHeading, AnimatedSection, ProjectCard, ScreenViewer,
+    skills/               SkillCategorySelector, SkillGrid, SkillCard, TechIcon
+    ui/                   Button, SectionHeading, AnimatedSection, ProjectCard,
                           ServiceCard, SpotlightCard, TechChip, IconBadge, BrandIcon
     visuals/              Original CSS product mockups for each project
     case-study/           ArchitectureDiagram
@@ -248,5 +256,8 @@ src/
 
 ## Credits
 
-Brand glyphs: [Simple Icons](https://simpleicons.org) (CC0 1.0). Trademarks belong to their owners
-and are used only to identify technologies.
+Brand glyphs and technology logos: [Simple Icons](https://simpleicons.org) (CC0 1.0),
+[SVG Logos](https://github.com/gilbarbara/logos) via Iconify (CC0 1.0) and
+[LobeHub Icons](https://github.com/lobehub/lobe-icons) (MIT, © LobeHub). Generic icons:
+[Lucide](https://lucide.dev) (ISC). Trademarks belong to their owners and are used only to identify
+technologies.

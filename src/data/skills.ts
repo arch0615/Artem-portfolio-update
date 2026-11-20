@@ -1,4 +1,5 @@
-import type { SkillCategory } from '../types'
+import type { MonoLogoKey, MulticolorLogoKey } from '../lib/tech-logos'
+import type { IconName, SkillCategory, TechnologyIcon } from '../types'
 
 /** Primary technologies shown in the strip directly below the hero. */
 export const coreTechnologies = [
@@ -14,170 +15,112 @@ export const coreTechnologies = [
   'AWS',
 ] as const
 
+// Icon helpers: `mono` fills a single-colour mark, `multicolor` keeps the official artwork,
+// `generic` is a Lucide icon for capabilities without a logo. Logo keys: `src/lib/tech-logos.ts`.
+const mono = (logo: MonoLogoKey, color: string): TechnologyIcon => ({ type: 'mono', logo, color })
+const multicolor = (logo: MulticolorLogoKey, color: string): TechnologyIcon => ({ type: 'multicolor', logo, color })
+const generic = (icon: IconName): TechnologyIcon => ({ type: 'generic', icon })
+
+/** Marks that are black in their brand colours use the brand's official white variant on the dark theme. */
+const WHITE = '#FFFFFF'
+
 /**
- * Skill areas in the Skills section, each with the technologies used and the real projects that
- * demonstrate it (shown with their screens, see `project-screens.ts`). Example notes and
- * technologies must come from the project's recorded facts in `projects.ts`; never invent features.
+ * Skill categories in the Skills section, in display order (the first is selected by default).
+ * Colours are the official brand colours.
  */
 export const skillCategories: SkillCategory[] = [
   {
     id: 'fullstack',
     title: 'Full-Stack Development',
-    description: 'Modern web frontends and the backends behind them, designed and shipped end to end.',
     icon: 'code',
-    skills: ['React', 'Next.js', 'TypeScript', 'JavaScript', 'Node.js', 'Python', 'PHP', 'C# / .NET'],
-    examples: [
-      {
-        project: 'radar-app',
-        note: 'Designed and built end to end: the mobile application, API, geospatial database and administration system.',
-      },
-      {
-        project: 'nexa-betfair-demo',
-        note: 'A React marketplace interface integrated with the Betfair snapshot API, with session maintenance and API reliability improvements.',
-        technologies: ['React', 'Cloudflare Functions', 'API integrations'],
-      },
+    technologies: [
+      { name: 'React', icon: mono('react', '#61DAFB') },
+      { name: 'Next.js', icon: mono('nextjs', WHITE) },
+      { name: 'TypeScript', icon: multicolor('typescript', '#3178C6') },
+      { name: 'JavaScript', icon: multicolor('javascript', '#F7DF1E') },
+      { name: 'Node.js', icon: mono('nodejs', '#5FA04E') },
+      { name: 'Python', icon: multicolor('python', '#3776AB') },
+      { name: 'FastAPI', icon: mono('fastapi', '#009688') },
+      { name: 'Tailwind CSS', icon: mono('tailwindcss', '#06B6D4') },
+      { name: 'PHP', icon: multicolor('php', '#777BB4') },
+      { name: 'C# / .NET', icon: multicolor('dotnet', '#512BD4') },
     ],
   },
   {
     id: 'mobile',
-    title: 'Mobile Application Development',
-    description: 'Cross-platform and native Android apps connected to production backends.',
+    title: 'Mobile Development',
     icon: 'smartphone',
-    skills: [
-      'React Native',
-      'Expo',
-      'Android',
-      'Kotlin',
-      'Java',
-      'Mobile API Integration',
-      'Push Notifications',
-      'Cross-platform Development',
-    ],
-    examples: [
-      {
-        project: 'radar-app',
-        note: 'A React Native and Expo app with interactive maps, GPS, alerts and notifications, and camera and gallery uploads.',
-        technologies: ['React Native', 'Expo', 'TypeScript'],
-        screens: ['radar-map', 'radar-location', 'radar-search'],
-      },
-      {
-        project: 'style4u',
-        note: 'A cross-platform mobile application built with React Native, Expo and TypeScript.',
-      },
+    technologies: [
+      { name: 'React Native', icon: mono('react', '#61DAFB') },
+      { name: 'Expo', icon: mono('expo', WHITE) },
+      { name: 'Android', icon: mono('android', '#3DDC84') },
+      { name: 'Kotlin', icon: multicolor('kotlin', '#7F52FF') },
+      { name: 'Java', icon: multicolor('java', '#E76F00') },
+      { name: 'Mobile API Integration', icon: generic('plug') },
+      { name: 'Push Notifications', icon: generic('bellRing') },
     ],
   },
   {
     id: 'ai',
-    title: 'AI Integration & Intelligent Agents',
-    description: 'LLM-powered features, agents and retrieval systems built into real products.',
+    title: 'AI & Intelligent Agents',
     icon: 'brain',
-    skills: [
-      'OpenAI API',
-      'Claude API',
-      'LLM Integration',
-      'AI Agents',
-      'RAG Systems',
-      'Vector Search',
-      'pgvector',
-      'CLIP',
-      'Whisper',
-      'AI-powered applications',
-    ],
-    examples: [
-      {
-        project: 'byd-technical-library-agent',
-        note: 'An AI-powered technical knowledge assistant that helps users interact with technical documentation.',
-      },
+    technologies: [
+      { name: 'OpenAI', icon: mono('openai', WHITE) },
+      { name: 'Claude', icon: mono('claude', '#D97757') },
+      { name: 'LLM Integration', icon: generic('brain') },
+      { name: 'AI Agents', icon: generic('bot') },
+      { name: 'RAG', icon: generic('fileSearch') },
+      { name: 'Vector Search', icon: generic('axis3d') },
+      // pgvector and CLIP have no official logo.
+      { name: 'pgvector', icon: generic('database') },
+      { name: 'CLIP', icon: generic('scanEye') },
     ],
   },
   {
     id: 'automation',
-    title: 'Business Process Automation',
-    description: 'Workflows, bots and integrations that remove repetitive work from operations.',
+    title: 'Automation & Integrations',
     icon: 'workflow',
-    skills: [
-      'n8n',
-      'Make',
-      'Workflow Automation',
-      'WhatsApp Business API',
-      'Telegram Bots',
-      'Email Automation',
-      'API Integrations',
-      'Webhooks',
-      'Data Processing',
-      'Background Jobs',
-    ],
-    examples: [
-      {
-        project: 'email-campaign-module',
-        note: 'Automates email campaigns from creation to tracking: a six-step wizard, audience selection, queued sending with rate limiting and automatic pausing, and open and click tracking.',
-      },
+    technologies: [
+      { name: 'n8n', icon: mono('n8n', '#FF91AC') },
+      { name: 'Make', icon: multicolor('make', '#6D00CC') },
+      { name: 'WhatsApp Business API', icon: multicolor('whatsapp', '#25D366') },
+      { name: 'Telegram Bots', icon: multicolor('telegram', '#26A5E4') },
+      { name: 'Webhooks', icon: generic('webhook') },
+      { name: 'Workflow Automation', icon: generic('workflow') },
+      { name: 'Email Automation', icon: generic('mails') },
     ],
   },
   {
     id: 'backend',
-    title: 'Backend Architecture & API Development',
-    description: 'Typed APIs, background processing and data models built for reliability and performance.',
-    icon: 'server',
-    skills: [
-      'Node.js',
-      'Fastify',
-      'Hono',
-      'Python',
-      'FastAPI',
-      'REST APIs',
-      'WebSockets',
-      'PostgreSQL',
-      'MySQL',
-      'Redis',
-      'Supabase',
-      'MongoDB',
-      'Drizzle ORM',
-      'Prisma',
-      'PostGIS',
-    ],
-    examples: [
-      {
-        project: 'email-campaign-module',
-        note: 'A database-backed sending queue with background workers, retries, webhook processing and integrations with SMTP, SendGrid, Amazon SES and other providers.',
-        screens: ['email-dashboard', 'email-tracking'],
-      },
-      {
-        project: 'django-performance-optimization',
-        note: 'Performance analysis, asynchronous processing with Celery and Redis integration: p95 response time from about 2.4 s to about 180 ms.',
-      },
-      {
-        project: 'radar-app',
-        note: 'A Fastify API over PostgreSQL with PostGIS geospatial search, accessed through Drizzle ORM.',
-        technologies: ['Fastify', 'TypeScript', 'Drizzle ORM', 'PostgreSQL', 'PostGIS'],
-        screens: ['radar-moderation'],
-      },
+    title: 'Backend & Databases',
+    icon: 'database',
+    technologies: [
+      { name: 'Fastify', icon: mono('fastify', WHITE) },
+      { name: 'Hono', icon: multicolor('hono', '#E36002') },
+      { name: 'PostgreSQL', icon: multicolor('postgresql', '#4169E1') },
+      { name: 'MySQL', icon: multicolor('mysql', '#4479A1') },
+      { name: 'Redis', icon: mono('redis', '#FF4438') },
+      { name: 'Supabase', icon: multicolor('supabase', '#3FCF8E') },
+      // PostGIS's logo is not in any of the icon libraries used.
+      { name: 'PostGIS', icon: generic('globe') },
+      { name: 'Drizzle ORM', icon: mono('drizzle', '#C5F74F') },
+      { name: 'Prisma', icon: mono('prisma', WHITE) },
     ],
   },
   {
     id: 'cloud',
-    title: 'Cloud Infrastructure & DevOps',
-    description: 'Containerised deployments, infrastructure as code and automated pipelines.',
+    title: 'Cloud & DevOps',
     icon: 'cloud',
-    skills: [
-      'AWS',
-      'Docker',
-      'Kubernetes',
-      'Terraform',
-      'GitHub Actions',
-      'Linux',
-      'Ubuntu',
-      'Nginx',
-      'Cloudflare',
-      'Vercel',
-      'CI/CD',
-    ],
-    examples: [
-      {
-        project: 'nexa-betfair-demo',
-        note: 'Hosted on Cloudflare Pages and Functions, with automated deployment through GitHub Actions and improved deployment reliability.',
-        technologies: ['Cloudflare Pages', 'Cloudflare Functions', 'GitHub Actions'],
-      },
+    technologies: [
+      { name: 'AWS', icon: multicolor('aws', '#FF9900') },
+      { name: 'Docker', icon: mono('docker', '#2496ED') },
+      { name: 'Terraform', icon: mono('terraform', '#844FBA') },
+      { name: 'GitHub Actions', icon: mono('githubactions', '#2088FF') },
+      { name: 'Cloudflare', icon: multicolor('cloudflare', '#F38020') },
+      { name: 'Vercel', icon: mono('vercel', WHITE) },
+      { name: 'Linux', icon: multicolor('linux', '#FCC624') },
+      { name: 'Nginx', icon: multicolor('nginx', '#009639') },
+      { name: 'CI/CD', icon: generic('infinity') },
     ],
   },
 ]

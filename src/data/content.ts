@@ -39,22 +39,11 @@ export const skillsContent = {
   title: 'Skills That Build Real Products.',
   description:
     'From full-stack engineering and mobile development to AI integration and intelligent automation, I turn complex ideas into practical digital solutions.',
-}
-
-/** Labels in the Skills section (skill areas: `src/data/skills.ts`). */
-export const skillsShowcaseContent = {
-  areasLabel: 'Skill areas',
-  technologiesLabel: 'Technologies',
-  exampleLabel: 'Project example',
-  examplesLabel: 'Project examples',
-  /** Follows the project name: "Radar App case study". */
-  caseStudy: 'case study',
-}
-
-/** Labels in the screenshot viewer (screens: `src/data/project-screens.ts`). */
-export const screenViewerContent = {
-  screensLabel: 'Screens',
-  placeholder: 'Screenshot coming soon',
+  /** Accessible name of the category tabs (categories and technologies: `src/data/skills.ts`). */
+  categoriesLabel: 'Skill categories',
+  /** Count under each category name: "10 technologies". */
+  technology: 'technology',
+  technologies: 'technologies',
 }
 
 export const projectsContent = {

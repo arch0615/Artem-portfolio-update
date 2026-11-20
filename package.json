@@ -13,7 +13,8 @@
     "preview": "vite preview",
     "typecheck": "tsc -b --noEmit",
     "lint": "eslint .",
-    "check": "npm run typecheck && npm run lint && npm run build"
+    "check": "npm run typecheck && npm run lint && npm run build",
+    "logos": "node scripts/generate-tech-logos.mjs"
   },
   "dependencies": {
     "@fontsource-variable/geist": "^5.3.0",

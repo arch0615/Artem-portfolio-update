@@ -42,10 +42,11 @@ All copy and project data live in typed files under `src/data/` — components c
 | File | Contents |
 | --- | --- |
 | `profile.ts` | Name, titles, brand icon, hero portrait, site URL and SEO defaults |
-| `content.ts` | Section copy: hero, about, experience, process, footer, intro |
+| `content.ts` | Section copy: hero, about, experience heading, process, footer, intro |
 | `projects.ts` | Project cards (featured projects get a case study) and the `showProjectLinks` switch |
 | `case-studies.ts` | Case-study narrative, architecture layers, decisions, results |
 | `skills.ts` | Skill categories and their technologies (icon, brand colour) and the core-technology strip |
+| `experience.ts` | Work history for the Experience timeline (company, role, months, location, summary, highlights, technologies) |
 | `services.ts` | Service cards |
 | `navigation.ts` | Navbar items (ids must match section ids) |
 
@@ -189,6 +190,16 @@ icons into `src/lib/tech-logos.ts`, which the site loads lazily in its own small
 library in the bundle, nothing fetched from a CDN). To add a technology with a new logo: add it to
 `LOGOS`, run `npm run logos`, then add the technology to `skills.ts`.
 
+### Experience timeline
+
+The Experience section lists the positions in `src/data/experience.ts` newest first (sorted by start
+month, so the order in the file doesn't matter). Each entry shows the company and role, the period
+(`start`/`end` as `YYYY-MM`, or `end: 'present'` for a current role) and location, a summary, the key
+responsibilities and achievements, and technology tags. On desktop the dates sit to the left of a
+vertical line with a company marker (its initials); tablets keep the line and the card; phones show
+the cards alone, with the marker in the card header. Each entry fades and rises in as it scrolls into
+view, and the line draws down to the next one.
+
 ### Project visuals
 
 Each project uses an original, resolution-independent CSS mockup (`src/components/visuals/`),
@@ -242,8 +253,9 @@ src/
     sections/             Hero (+ HeroPortrait), TechHighlights, About, Skills,
                           Projects, Services, Experience, Process
     skills/               SkillCategorySelector, SkillGrid, SkillCard, TechIcon
+    experience/           ExperienceEntry (one position in the timeline)
     ui/                   Button, SectionHeading, AnimatedSection, ProjectCard,
-                          ServiceCard, SpotlightCard, TechChip, IconBadge, BrandIcon
+                          ServiceCard, SpotlightCard, TechChip, TechTag, IconBadge, BrandIcon
     visuals/              Original CSS product mockups for each project
     case-study/           ArchitectureDiagram
   data/                   All site content (see "Editing content")

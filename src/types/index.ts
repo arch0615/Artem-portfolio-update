@@ -117,10 +117,23 @@ export interface Service {
   items: string[]
 }
 
-export interface Milestone {
-  title: string
-  description: string
-  icon: IconName
+/** A calendar month, written `YYYY-MM` (for example `2020-11`). */
+export type YearMonth = `${number}-${number}`
+
+/** One position in the Experience timeline (`src/data/experience.ts`). */
+export interface Position {
+  /** Stable key, e.g. the company's name in lowercase. */
+  id: string
+  company: string
+  role: string
+  /** First and last month in the role; `end: 'present'` for a current role. */
+  start: YearMonth
+  end: YearMonth | 'present'
+  location: string
+  summary: string
+  /** Key responsibilities and achievements. */
+  highlights: string[]
+  technologies: string[]
 }
 
 export interface ProcessStep {

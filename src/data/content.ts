@@ -1,4 +1,4 @@
-import type { Milestone, ProcessStep } from '../types'
+import type { ProcessStep } from '../types'
 
 /** Section copy for the home page. Edit text here, not in components. */
 
@@ -64,55 +64,14 @@ export const servicesContent = {
 export const experienceContent = {
   eyebrow: 'Experience',
   title: '17+ Years of Turning Complex Ideas Into Working Software.',
-  paragraphs: [
-    "Throughout my career, I've worked across multiple industries, technology stacks, and software architectures.",
-    'My experience includes developing business applications, scalable backend systems, mobile platforms, AI integrations, automation tools, and cloud infrastructure.',
-    'I focus on delivering software that is reliable, maintainable, secure, and aligned with business objectives.',
-  ],
+  description: "Throughout my career, I've worked across multiple industries, technology stacks, and software architectures.",
+  /** Accessible names for the timeline and its lists (positions: `src/data/experience.ts`). */
+  timelineLabel: 'Work history',
+  highlightsLabel: 'Key responsibilities and achievements',
+  technologiesLabel: 'Technologies',
+  /** End of a current role's period: "Nov 2020 – Present". */
+  present: 'Present',
 }
-
-export const milestones: Milestone[] = [
-  {
-    title: 'Full-Stack Development',
-    description: 'Complete web applications — frontend, backend and everything that connects them.',
-    icon: 'layers',
-  },
-  {
-    title: 'Backend Engineering',
-    description: 'APIs, data models, queues and services designed to stay reliable under load.',
-    icon: 'server',
-  },
-  {
-    title: 'Mobile Applications',
-    description: 'Cross-platform and native Android apps wired to production backends.',
-    icon: 'smartphone',
-  },
-  {
-    title: 'AI Integrations',
-    description: 'LLMs, agents, retrieval and vector search embedded into real workflows.',
-    icon: 'brain',
-  },
-  {
-    title: 'Business Automation',
-    description: 'Workflows, bots and background processing that remove repetitive work.',
-    icon: 'workflow',
-  },
-  {
-    title: 'API Integrations',
-    description: 'Third-party services, messaging platforms, webhooks and reliable data exchange.',
-    icon: 'plug',
-  },
-  {
-    title: 'Cloud Infrastructure',
-    description: 'Containerised deployments, CI/CD pipelines and Linux server management.',
-    icon: 'cloud',
-  },
-  {
-    title: 'Performance Optimization',
-    description: 'Finding bottlenecks and making slow systems fast — like a p95 drop from 2.4 s to 180 ms.',
-    icon: 'gauge',
-  },
-]
 
 export const processContent = {
   eyebrow: 'Process',

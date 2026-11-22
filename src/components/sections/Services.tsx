@@ -15,6 +15,7 @@ export function Services() {
           eyebrow={servicesContent.eyebrow}
           title={servicesContent.title}
           description={servicesContent.description}
+          descriptionOneLine="lg"
         />
         <Stagger as="ul" className="mt-14 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3 xl:gap-5">
           {services.map((service, index) => (

@@ -21,6 +21,7 @@ export function Projects() {
           eyebrow={projectsContent.eyebrow}
           title={projectsContent.title}
           description={projectsContent.description}
+          descriptionOneLine="xl"
         />
 
         <div className="mt-14 space-y-6 lg:space-y-8">

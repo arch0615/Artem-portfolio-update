@@ -1,7 +1,7 @@
 import type { Project } from '../types'
 
 /**
- * Show the "Visit" links to finished client projects on the project cards. These are portfolio
+ * Show the "Visit" links to projects' live sites on the project cards and case-study pages. These are portfolio
  * evidence (the delivered websites), not contact channels. Set to `false` if a marketplace you
  * use doesn't allow external links on your portfolio.
  */
@@ -18,6 +18,33 @@ export const showProjectLinks = true
  *   and extend the card to render it.
  */
 export const projects: Project[] = [
+  {
+    slug: 'swan',
+    name: 'Swan',
+    category: 'Fintech / Embedded Banking Platform',
+    description:
+      'An embedded banking platform that lets companies offer accounts, cards and payments inside their own products, white-labeled under their own brand.',
+    technologies: ['TypeScript', 'React', 'GraphQL', 'Node.js'],
+    features: [
+      'Accounts with IBANs',
+      'Individual and company onboarding',
+      'KYC verification',
+      'Virtual, physical and digital cards',
+      'SEPA and instant credit transfers',
+      'Direct debits',
+      'Card payments',
+      'White-labeled banking',
+      'GraphQL API',
+    ],
+    contribution:
+      'Full stack development across accounts and IBANs, card issuing, payments, and onboarding with KYC: React and TypeScript on the frontend, Node.js on the backend, connected through GraphQL.',
+    links: [{ label: 'swan.io', href: 'https://www.swan.io/' }],
+    visual: 'swan',
+    visualLabel:
+      'Illustration of a white-labeled business account with an IBAN and transactions, a virtual card, and a company onboarding checklist',
+    accent: 'violet',
+    featured: true,
+  },
   {
     slug: 'radar-app',
     name: 'Radar App',

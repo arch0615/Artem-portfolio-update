@@ -5,6 +5,7 @@ import { cn } from '@/lib/cn'
 import { showProjectLinks } from '@/data/projects'
 import { ProjectVisual } from '@/components/visuals/ProjectVisual'
 import { ButtonLink } from './Button'
+import { ProjectSiteLinks } from './ProjectSiteLinks'
 import { SpotlightCard } from './SpotlightCard'
 import { TechChip } from './TechChip'
 
@@ -94,11 +95,12 @@ export function FeaturedProjectCard({ project, index, reversed = false }: Featur
             ))}
           </ul>
 
-          <div className="mt-8 pt-1 lg:mt-auto lg:pt-8">
+          <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4 pt-1 lg:mt-auto lg:pt-8">
             <ButtonLink to={href} variant="secondary" aria-label={`Read the ${project.name} case study`}>
               Read case study
               <ArrowRight aria-hidden className="size-4 transition-transform duration-200 group-hover/btn:translate-x-0.5" />
             </ButtonLink>
+            <ProjectSiteLinks project={project} />
           </div>
         </div>
       </article>

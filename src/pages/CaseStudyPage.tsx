@@ -14,6 +14,7 @@ import { ArchitectureDiagram } from '@/components/case-study/ArchitectureDiagram
 import { Reveal, Stagger, StaggerItem } from '@/components/ui/AnimatedSection'
 import { SpotlightCard } from '@/components/ui/SpotlightCard'
 import { TechChip } from '@/components/ui/TechChip'
+import { ProjectSiteLinks } from '@/components/ui/ProjectSiteLinks'
 import { ProjectVisual } from '@/components/visuals/ProjectVisual'
 import NotFoundPage from './NotFoundPage'
 
@@ -81,6 +82,7 @@ function CaseStudyView({ project, study }: { project: Project; study: CaseStudy 
               {project.name}
             </h1>
             <p className="mt-5 max-w-3xl text-lg leading-relaxed text-fg-muted sm:text-xl">{project.description}</p>
+            <ProjectSiteLinks project={project} className="mt-4" />
           </Reveal>
 
           <Reveal delay={0.1}>

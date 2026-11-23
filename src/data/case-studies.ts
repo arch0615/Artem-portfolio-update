@@ -9,6 +9,112 @@ import type { CaseStudy } from '../types'
  * than editing the UI. Never add numbers that were not actually measured.
  */
 export const caseStudies: Record<string, CaseStudy> = {
+  swan: {
+    slug: 'swan',
+    seoDescription:
+      'Case study: Swan — an embedded banking platform for accounts with IBANs, cards, payments and KYC onboarding, with full stack work in TypeScript, React, Node.js and GraphQL.',
+    role: 'Full stack: accounts & IBANs, cards, payments, onboarding & KYC',
+    overview:
+      'Swan is a European embedded banking platform: software companies use it to offer bank accounts, cards and payments inside their own products, white-labeled under their own brand. I worked on it as a full stack engineer across four product areas — accounts and IBANs, cards, payments, and account holder onboarding with KYC — with React and TypeScript on the frontend, Node.js on the backend and GraphQL in between.',
+    problem:
+      'Software platforms usually send their users to a bank for anything involving money. Swan lets a platform offer those features itself — an account with its own IBAN, cards, transfers and direct debits — without building banking infrastructure. Every flow has to be dependable and embeddable: account holders are onboarded and verified before they bank, and the same features have to work behind each partner’s brand.',
+    challenges: [
+      {
+        title: 'Onboarding and KYC',
+        description:
+          'Creating individual and company account holders, collecting supporting documents and verifying identity as part of opening an account.',
+      },
+      {
+        title: 'Accounts with IBANs',
+        description: 'Accounts that work like real bank accounts, each with its own IBAN, for individuals and companies.',
+      },
+      {
+        title: 'Cards',
+        description: 'Issuing and managing virtual, physical and digital cards linked to accounts.',
+      },
+      {
+        title: 'Payments',
+        description: 'Moving money in and out of accounts with SEPA and instant credit transfers, direct debits and card payments.',
+      },
+    ],
+    architecture: {
+      caption: 'React interfaces and partner integrations use one GraphQL API, backed by Node.js services.',
+      layers: [
+        {
+          label: 'Clients',
+          title: 'React + TypeScript',
+          items: ['Banking interfaces', 'Onboarding flows', 'Partner integrations'],
+        },
+        {
+          label: 'API',
+          title: 'GraphQL',
+          items: ['Accounts & IBANs', 'Cards', 'Payments', 'Onboarding & KYC'],
+        },
+        {
+          label: 'Services',
+          title: 'Node.js + TypeScript',
+          items: ['Account holders', 'Card issuing', 'Credit transfers & direct debits', 'Identity verification'],
+        },
+      ],
+    },
+    stack: [
+      { group: 'Frontend', items: ['React', 'TypeScript'] },
+      { group: 'API', items: ['GraphQL'] },
+      { group: 'Backend', items: ['Node.js', 'TypeScript'] },
+    ],
+    implementation: [
+      {
+        title: 'Accounts and IBANs',
+        description:
+          'Full stack work on accounts and their IBANs, from the Node.js backend through the GraphQL API to the React interface.',
+      },
+      {
+        title: 'Cards',
+        description: 'Full stack work on card issuing and management for virtual, physical and digital cards.',
+      },
+      {
+        title: 'Payments',
+        description:
+          'Full stack work on sending and receiving money: SEPA and instant credit transfers, direct debits and card payments.',
+      },
+      {
+        title: 'Onboarding and KYC',
+        description:
+          'Full stack work on onboarding individual and company account holders, including document collection and identity verification.',
+      },
+    ],
+    decisions: [
+      {
+        title: 'One GraphQL API',
+        description:
+          'Accounts, cards, payments and onboarding are exposed through a single GraphQL API, so each client asks for exactly the data it needs.',
+      },
+      {
+        title: 'TypeScript across the stack',
+        description: 'TypeScript on both the React frontend and the Node.js backend: one language and one type system end to end.',
+      },
+      {
+        title: 'Verification as part of onboarding',
+        description:
+          'Identity verification and supporting documents are built into the onboarding flow, so an account holder is verified as part of opening an account.',
+      },
+      {
+        title: 'Built to be embedded',
+        description: 'Banking features run inside partners’ products, white-labeled under the partner’s brand.',
+      },
+    ],
+    results: {
+      summary:
+        'Full stack contributions across the core of an embedded banking platform: accounts and IBANs, cards, payments, and onboarding with KYC.',
+      points: [
+        'Accounts with IBANs for individual and company account holders',
+        'Virtual, physical and digital cards',
+        'SEPA and instant credit transfers, direct debits and card payments',
+        'Onboarding with document collection and identity verification',
+      ],
+    },
+  },
+
   'radar-app': {
     slug: 'radar-app',
     seoDescription:

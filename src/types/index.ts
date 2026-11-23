@@ -135,6 +135,7 @@ export interface Position {
 
 /** Original CSS-based product mockups in `src/components/visuals`. */
 export type ProjectVisualKey =
+  | 'swan'
   | 'radar'
   | 'email'
   | 'django'

@@ -10,8 +10,10 @@ import { NexaVisual } from './NexaVisual'
 import { RadarVisual } from './RadarVisual'
 import { SolidHouseVisual } from './SolidHouseVisual'
 import { Style4uVisual } from './Style4uVisual'
+import { SwanVisual } from './SwanVisual'
 
 const visuals: Record<ProjectVisualKey, ComponentType> = {
+  swan: SwanVisual,
   radar: RadarVisual,
   email: EmailVisual,
   django: DjangoVisual,
